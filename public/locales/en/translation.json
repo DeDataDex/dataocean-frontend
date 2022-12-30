@@ -1,0 +1,55 @@
+{
+  "header": {
+    "home": "Home",
+    "videos": "Videos",
+    "changeLanguage": "Change Language"
+  },
+  "footer": {
+    "content": "All rights reserved"
+  },
+  "home": {
+    "searchNotFound": "Sorry, that page was not found.",
+    "searchNotFoundDetail": "Try going back to where you were or heading to the <a href=\"/\">home</a> page."
+  },
+  "video": {
+    "price": "Price",
+    "duration": "Duration",
+    "size": "Size",
+    "title": "Title",
+    "detail": "Poll Detail",
+    "description": "Description",
+    "id": "ID",
+    "status": "Status",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "creator": "Creator Address",
+    "discussion": "Discussion",
+    "yes": "Yes",
+    "no": "No",
+    "max": "max",
+    "clear": "clear",
+    "install": "Install Wallet",
+    "connect": "Connect Wallet",
+    "installWallet": "Install Wallet",
+    "connectWallet": "Connect Wallet",
+    "connected": "Wallet Connected",
+    "selectedAccount": "Selected Account",
+    "connecting": "Connecting Wallet",
+    "installing": "Onboarding in progress",
+    "cancel": "Cancel",
+    "ok": "Ok",
+    "number": "Number",
+    "txFee": "Tx Fee",
+    "feeTips": "Fee paid to execute this transaction",
+    "quorum": "Quorum",
+    "threshold": "Threshold",
+    "hideVoted": "Hide closed polls",
+    "all": "All",
+    "create": "Create",
+    "edit": "Edit",
+    "deposite": "Deposite",
+    "externalUrl": "External URL",
+    "locale": "en",
+    "": ""
+  }
+}

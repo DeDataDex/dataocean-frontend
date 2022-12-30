@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@/common/*": [
+        "common/*"
+      ],
+      "@/sagaMiddleware/*": [
+        "sagaMiddleware/*"
+      ],
+      "@/rootStore/*": [
+        "rootStore/*"
+      ],
+      "@/Videos/*": [
+        "modules/Videos/*"
+      ],
+      "@/utils/*": [
+        "utils/*"
+      ]
+    }
+  }
+}
