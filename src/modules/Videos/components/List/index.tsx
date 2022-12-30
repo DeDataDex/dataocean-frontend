@@ -20,12 +20,10 @@ import client from '@/utils/client';
 import { getNetwork } from '@/utils/helper';
 import { LoadingOutlined } from '@ant-design/icons';
 import ConnectWallet from '@/Videos/components/ConnectWallet/adapter';
-import PollDialog from '@/Videos/components/PollDialog';
 import Link from '@material-ui/core/Link';
 import { NavLink } from 'react-router-dom';
 import account from 'mobxStore/account';
 import VideoCard from './VideoCard';
-// import DynamicForm from '../DynamicForm';
 import MOCK_VIDEO_LIST from '../../../../mocks/videoList.json'
 
 const useStyles = (theme: Theme) =>
@@ -163,7 +161,7 @@ class List extends PureComponent<Props, IndexState> {
       this.setState({
         accounts: [window.starcoin.selectedAddress]
       })
-      if (process.env.REACT_APP_STARCOIN_POLL_ADMIN_ADDRESS?.split(',').filter((address) => address.toLowerCase() === window.starcoin.selectedAddress).length) {
+      if (process.env.REACT_APP_DATA_OCEAN_ADMIN_ADDRESS?.split(',').filter((address) => address.toLowerCase() === window.starcoin.selectedAddress).length) {
         this.setState({
           isAdmin: true
         })
@@ -237,19 +235,6 @@ class List extends PureComponent<Props, IndexState> {
         <Helmet>
           <title>{t('header.videos')}</title>
         </Helmet>
-
-        <PollDialog
-          open={open}
-          defaultCreator={accounts[0]}
-          onClose={() => {
-            this.setState({
-              open: false,
-            });
-          }}
-          afterSubmit={async () => {
-            await this.fetchList();
-          }}
-        />
         <CenteredView>
           <Card>
             <div className={classes.gridCards}>

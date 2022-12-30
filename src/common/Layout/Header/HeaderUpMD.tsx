@@ -131,6 +131,7 @@ function Index(props: any) {
   const [starcoin, setStarcoin] = useState(window.starcoin);
   const [connectStatus, setConnectStatus] = useState(0);
   const [accountAddress, setAccountAddress] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // statusText fix: Solve problems that cannot be translated.
   const textContent = [
@@ -142,13 +143,6 @@ function Index(props: any) {
   const [textStatus, setTextStatus] = useState(0);
   const [buttonDisable, setButtonDisable] = useState(false);
   const [onboarding, setOnBoarding] = useState<any>();
-  const networkVersion: Map<string, string> = new Map([
-    ['253', 'Halley'],
-    ['1', 'Main'],
-    ['251', 'Barnard'],
-    ['252', 'Proxima'],
-    ['254', 'Localhost:9850'],
-  ]);
 
   // connectStatusChange callback
   const handleNewAccounts = (newAccounts: string[]) => {
@@ -162,6 +156,11 @@ function Index(props: any) {
       setTextStatus(4);
       setConnectStatus(4);
       setAccountAddress(newAccounts[0]);
+      if (process.env.REACT_APP_DATA_OCEAN_ADMIN_ADDRESS?.split(',').filter((address) => address.toLowerCase() === newAccounts[0]).length) {
+        setIsAdmin(true)
+      }else{
+        setIsAdmin(false)
+      }
       if (onboarding) {
         onboarding.stopOnboarding();
       }
@@ -206,8 +205,6 @@ function Index(props: any) {
     }
 
     if (isStarMaskInstalled) {
-      // window.starcoin.on('chainChanged', handleNewChain)
-      // window.starcoin.on('networkChanged', handleNewNetwork)
       starcoin.on('accountsChanged', handleNewAccounts);
     }
   };
@@ -355,9 +352,9 @@ function Index(props: any) {
           {i18nMenu}
         </div>
         <Box display="flex" alignItems="center" className={classes.rightBox}>
-          {connectStatus === 4 ? (
-            <Button variant="outlined" className={classes.darkBgButton}>
-              {networkVersion.get(starcoin.networkVersion)}
+          {isAdmin ? (
+            <Button href="/admin/upload" variant="outlined" className={classes.darkBgButton}>
+              {t('header.admin')}
             </Button>
           ) : null}
           <Button

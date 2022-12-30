@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Helmet from 'react-helmet';
+import { useHistory } from 'react-router-dom';
 import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -20,9 +21,6 @@ import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import client from '@/utils/client';
 import moment from 'moment';
-import MomentUtils from '@date-io/moment';
-import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DynamicForm from '../DynamicForm';
 
 import 'moment/locale/zh-cn';
 
@@ -110,6 +108,7 @@ interface PollDialogProps {
   // onClose: () => void;
   // afterSubmit: () => void;
   defaultCreator?: string;
+  computedMatch: any;
 }
 
 const fields = {
@@ -123,6 +122,7 @@ const fields = {
   link: '',
   typeArgs1: '',
   idOnChain: '',
+  databaseID: '',
   endTime: '',
   forVotes: '',
   againstVotes: '',
@@ -138,9 +138,13 @@ const PollDialog = ({
   // afterSubmit,
   id,
   defaultCreator,
+  computedMatch,
 }: PollDialogProps) => {
   const [form, setForm] = useState<Record<string, any>>(fields);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
+
+  const pollDatabaseID = computedMatch.params.id;
+  console.log('poll id', pollDatabaseID);
 
   const helperTextMaps = {
     titleEn: 'Please input title.',
@@ -154,6 +158,7 @@ const PollDialog = ({
     network: t('video.networkHelperText'),
     typeArgs1: t('video.type_args_1HelperText'),
     idOnChain: t('video.id_on_chainHelperText'),
+    databaseID: t('video.databaseIDHelperText'),
     forVotes: t('video.forVotesHelperText'),
     againstVotes: t('video.againstVotesHelperText'),
   };
@@ -226,10 +231,10 @@ const PollDialog = ({
       const values = Object.values(inputs);
       keys.forEach((key, index) => {
         // console.log(`${key}: ${values[key]}`);
-        params.append(key,values[index].toString())
+        params.append(key,values[index].toString());
       });
 
-      const addURL = 'videos/add';
+      const addURL = 'videos/modif';
 
       const postConfig = {
         headers: {
@@ -240,11 +245,17 @@ const PollDialog = ({
         }
       };
 
+      // const url = '/videos/add?againstVotes=1&creator=0x1&description=1&descriptionEn=1&endTime=1&forVotes=1&idOnChain=1&link=1&network=1&status=1&title=1&titleEn=1&typeArgs1=1';
+      // await client.post(values.id ? 'videos/modif' : 'videos/add', values);
+      // await client.post('videos/add', values);
+      // await client.post(url, values);
+      // await client.post(addURL, params, postCconfig);
+      // await client.post(`${addURL}?${params.toString()}`, params, postConfig);
       await client.post(addURL, params, postConfig);
       // await afterSubmit();
       handleClose();
       alert('Success');
-      window.location.href = '/';
+      window.location.href = "/";
     } catch (e) {
       console.error(e);
     }
@@ -268,6 +279,7 @@ const PollDialog = ({
     endTime,
     typeArgs1,
     idOnChain,
+    databaseID,
     forVotes,
     againstVotes,
     status,
@@ -276,8 +288,9 @@ const PollDialog = ({
 
   useEffect(() => {
     const init = async () => {
-      if (open) {
+      if (!open) {
         // 此时为添加，会带上默认 creator
+        /*
         if (id === undefined) {
           // setForm({ ...fields, creator: defaultCreator });
           setForm({ ...fields });
@@ -294,12 +307,34 @@ const PollDialog = ({
             link: detail.link,
             typeArgs1: detail.typeArgs1,
             idOnChain: detail.idOnChain,
+            databaseID: detail.id,
             forVotes: detail.forVotes,
             againstVotes: detail.againstVotes,
             endTime: detail.endTime,
             id: detail.id,
           });
         }
+        */
+        // const detail = await client.get(`get?id=${id}&network=${network}`);
+        const detail = await client.get(`videos/detail/${pollDatabaseID}`);
+        console.log('detail edit', detail)
+        setForm({
+          title: detail.title,
+          titleEn: detail.titleEn,
+          descriptionEn: detail.descriptionEn,
+          description: detail.description,
+          creator: detail.creator,
+          network: detail.network,
+          status: detail.status,
+          link: detail.link,
+          typeArgs1: detail.typeArgs1,
+          idOnChain: detail.idOnChain,
+          databaseID: detail.id,
+          forVotes: detail.forVotes,
+          againstVotes: detail.againstVotes,
+          endTime: detail.endTime,
+          id: detail.id,
+        });
       }
     };
     init();
@@ -312,250 +347,6 @@ const PollDialog = ({
       <Helmet>
         <title>{t('video.createAPoll')}</title>
       </Helmet>
-
-      {/*
-      <Dialog
-        open={open}
-        aria-labelledby="simple-dialog-title"
-        onClose={handleClose}
-      >
-        <DialogTitle id="simple-dialog-title">
-          {id ? t('video.edit') : t('video.createAPoll')}
-        </DialogTitle>
-        <DialogContent>
-          <DynamicForm />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="titleEn"
-            name="titleEn"
-            error={errors.titleEn}
-            helperText={errors.titleEn ? helperTextMaps.titleEn : undefined}
-            value={titleEn}
-            label="Title"
-            fullWidth
-            onChange={handleFormChange}
-          />
-          <TextField
-            margin="dense"
-            required
-            id="title"
-            name="title"
-            helperText={errors.title ? helperTextMaps.title : undefined}
-            error={errors.title}
-            value={title}
-            label="中文标题"
-            fullWidth
-            onChange={handleFormChange}
-          />
-          <TextField
-            margin="dense"
-            required
-            id="descriptionEn"
-            name="descriptionEn"
-            error={errors.descriptionEn}
-            helperText={
-              errors.descriptionEn ? helperTextMaps.descriptionEn : undefined
-            }
-            value={descriptionEn}
-            label="Description"
-            multiline
-            rowsMax="4"
-            fullWidth
-            onChange={handleFormChange}
-          />
-          <TextField
-            margin="dense"
-            id="description"
-            required
-            name="description"
-            multiline
-            rowsMax="4"
-            helperText={
-              errors.description ? helperTextMaps.description : undefined
-            }
-            error={errors.description}
-            value={description}
-            label="中文描述"
-            fullWidth
-            onChange={handleFormChange}
-          />
-          <TextField
-            margin="dense"
-            id="creator"
-            required
-            name="creator"
-            multiline
-            rowsMax="4"
-            helperText={errors.creator ? helperTextMaps.creator : undefined}
-            error={errors.creator}
-            value={creator}
-            label={t('video.creator')}
-            fullWidth
-            onChange={handleFormChange}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            required
-            id="link"
-            name="link"
-            helperText={errors.link ? helperTextMaps.link : undefined}
-            error={errors.link}
-            value={link}
-            label={t('video.externalUrl')}
-            fullWidth
-            onChange={handleFormChange}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            required
-            id="endTime"
-            name="endTime"
-            helperText={errors.endTime ? helperTextMaps.endTime : undefined}
-            error={errors.endTime}
-            value={endTime}
-            label={t('video.endTime')}
-            fullWidth
-            onChange={handleFormChange}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            required
-            id="typeArgs1"
-            name="typeArgs1"
-            error={errors.typeArgs1}
-            helperText={
-              errors.typeArgs1 ? helperTextMaps.typeArgs1 : undefined
-            }
-            value={typeArgs1}
-            label={t('video.type_args_1')}
-            fullWidth
-            onChange={handleFormChange}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="idOnChain"
-            required
-            name="idOnChain"
-            error={errors.idOnChain}
-            helperText={
-              errors.idOnChain ? helperTextMaps.idOnChain : undefined
-            }
-            value={idOnChain}
-            label={t('video.id_on_chain')}
-            fullWidth
-            onChange={handleFormChange}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="forVotes"
-            required
-            name="forVotes"
-            error={errors.forVotes}
-            helperText={
-              errors.forVotes ? helperTextMaps.forVotes : undefined
-            }
-            value={forVotes}
-            label={t('video.forVotes')}
-            fullWidth
-            onChange={handleFormChange}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="againstVotes"
-            required
-            name="againstVotes"
-            error={errors.againstVotes}
-            helperText={
-              errors.againstVotes ? helperTextMaps.againstVotes : undefined
-            }
-            value={againstVotes}
-            label={t('video.againstVotes')}
-            fullWidth
-            onChange={handleFormChange}
-          />
-          <FormControl style={{ marginRight: 8 }}>
-            <InputLabel id="demo-simple-select-label">
-              {t('video.status')}
-            </InputLabel>
-            <Select
-              margin="dense"
-              labelId="demo-simple-select-label"
-              id="status"
-              name="status"
-              style={{ width: 150 }}
-              value={status}
-              error={errors.status}
-              label={t('video.status')}
-              onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                setForm({
-                  ...form,
-                  status: event.target.value as number,
-                });
-                setErrors({
-                  ...errors,
-                  status: false,
-                });
-              }}
-            >
-              {menus.slice(1).map(({ label, value }) => (
-                <MenuItem value={value} key={value}>
-                  {label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl>
-            <InputLabel id="network-simple-select-label">
-              {t('video.network')}
-            </InputLabel>
-            <Select
-              margin="dense"
-              labelId="network-simple-select-label"
-              id="network"
-              name="network"
-              style={{ width: 150 }}
-              value={network}
-              error={errors.network}
-              label={t('video.network')}
-              onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                setForm({
-                  ...form,
-                  network: event.target.value as number,
-                });
-                setErrors({
-                  ...errors,
-                  network: false,
-                });
-              }}
-            >
-              {process.env.REACT_APP_STARCOIN_NETWORKS &&
-                process.env.REACT_APP_STARCOIN_NETWORKS.split(',').map((net) => (
-                  <MenuItem value={net} key={net}>
-                    {net}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button color="primary" onClick={handleClose}>
-            {t('video.cancel')}
-          </Button>
-          <Button color="primary" autoFocus onClick={handleSubmit}>
-            {t('video.ok')}
-          </Button>
-        </DialogActions>
-      </Dialog>
-      */}
-
       <CenteredView>
           <Card>
             <CardHeader
@@ -567,7 +358,6 @@ const PollDialog = ({
                   </Grid>
               } />
           <Box className={classes.formBox}>
-            {/* <DynamicForm /> */}
             <TextField
               autoFocus
               required
@@ -684,6 +474,9 @@ const PollDialog = ({
               label={t('video.id_on_chain')}
               fullWidth
               onChange={handleFormChange}
+              inputProps={
+                { readOnly: true }
+              }
             />
             <TextField
               margin="dense"

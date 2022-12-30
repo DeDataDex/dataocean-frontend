@@ -2,6 +2,7 @@
   "header": {
     "home": "Home",
     "videos": "Videos",
+    "admin": "Admin",
     "changeLanguage": "Change Language"
   },
   "footer": {
@@ -22,7 +23,8 @@
     "status": "Status",
     "startTime": "Start Time",
     "endTime": "End Time",
-    "creator": "Creator Address",
+    "picUrl": "Picture Url",
+    "videoUrl": "Video Url",
     "discussion": "Discussion",
     "yes": "Yes",
     "no": "No",
@@ -37,7 +39,8 @@
     "connecting": "Connecting Wallet",
     "installing": "Onboarding in progress",
     "cancel": "Cancel",
-    "ok": "Ok",
+    "upload": "Upload",
+    "uploadAVideo": "Upload A Video",
     "number": "Number",
     "txFee": "Tx Fee",
     "feeTips": "Fee paid to execute this transaction",

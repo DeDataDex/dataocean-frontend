@@ -32,12 +32,10 @@ import Alert from '@material-ui/lab/Alert';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { getPollData, getAddressSTCBalance, getPollAccountVotes } from '@/utils/sdk';
-import PollDialog from '@/Videos/components/PollDialog';
 import { providers, utils, bcs } from '@starcoin/starcoin';
 import { POLL_STATUS } from '@/utils/constants';
 import client from '@/utils/client';
 import qs from 'qs';
-import BorderLinearProgress from '../BorderLinearProgress';
 import MOCK_VIDEO_LIST from '../../../../mocks/videoList.json'
 import VideoPlayer from './VideoPlayer'
 import VideoInfo from './VideoInfo';
@@ -285,7 +283,7 @@ class Detail extends PureComponent<IndexProps, IndexState> {
   componentDidMount = async () => {
     const isStarMaskInstalled = StarMaskOnboarding.isStarMaskInstalled();
     if (isStarMaskInstalled) {
-      if (process.env.REACT_APP_STARCOIN_POLL_ADMIN_ADDRESS?.split(',').filter((address) => address.toLowerCase() === window.starcoin.selectedAddress).length) {
+      if (process.env.REACT_APP_DATA_OCEAN_ADMIN_ADDRESS?.split(',').filter((address) => address.toLowerCase() === window.starcoin.selectedAddress).length) {
         this.setState({
           isAdmin: true
         })
@@ -315,7 +313,6 @@ class Detail extends PureComponent<IndexProps, IndexState> {
 
   render() {
     const {detail} = this.state;
-    console.log(detail);
     return (
       <CenteredView>
         <VideoPlayer src={detail.videoUrl} />

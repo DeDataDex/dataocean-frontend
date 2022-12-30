@@ -11,7 +11,6 @@ import { getPollData } from '@/utils/sdk';
 import { POLL_STATUS } from '@/utils/constants';
 import Link from '@material-ui/core/Link';
 import { NavLink } from 'react-router-dom';
-import BorderLinearProgress from '../../BorderLinearProgress';
 import MOCK_VIDEO_LIST from '../../../../../mocks/videoList.json'
 
 const useStyles = (theme: Theme) =>

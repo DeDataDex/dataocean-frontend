@@ -15,8 +15,8 @@ import store, { history } from './rootStore';
 
 const NetworkRedirect = lazy(() => import('./modules/NetworkRedirect/index'));
 const Videos = lazy(() => import('./modules/Videos/containers'));
-const CreatePoll = lazy(() => import('./modules/Videos/components/CreatePoll'));
-const EditPoll = lazy(() => import('./modules/Videos/components/EditPoll'));
+const UploadVideo = lazy(() => import('./modules/Videos/components/UploadVideo'));
+const EditVideo = lazy(() => import('./modules/Videos/components/EditVideo'));
 const Error404 = lazy(() => import('./modules/Error404'));
 
 const RouteWithLayout = (props: any) => {
@@ -55,8 +55,8 @@ ReactDOM.render(
       <Switch>
         <RouteWithLayout exact path={withBaseRoute('/')} title="NetworkRedirect" layout={MainLayout} component={NetworkRedirect} />
         <RouteWithLayout path={withBaseRoute('/videos')} title="Poll" layout={MainLayout} component={Videos} />
-        <RouteWithLayout path={withBaseRoute('/create_poll')} title="Create Poll" layout={MainLayout} component={CreatePoll} />
-        <RouteWithLayout path={withBaseRoute('/edit_poll/:id')} title="Edit Poll" layout={MainLayout} component={EditPoll} />
+        <RouteWithLayout path={withBaseRoute('/admin/upload')} title="Upload Video" layout={MainLayout} component={UploadVideo} />
+        <RouteWithLayout path={withBaseRoute('/edit_poll/:id')} title="Edit Poll" layout={MainLayout} component={EditVideo} />
         <RouteWithLayout exact path={withBaseRoute('/error')} title="404" layout={MainLayout} component={Error404} />
         <RouteWithLayout path={undefined} title="404" layout={MainLayout} component={Error404} />
       </Switch>
