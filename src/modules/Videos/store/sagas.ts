@@ -68,11 +68,29 @@ function* watchGetPollList() {
   yield takeLatest(types.GET_POLL_LIST, getPollList)
 }
 
+export function* getAccountBalance(action: ReturnType<typeof actions.getAccountBalance>) {
+  try {
+    const res = yield call(withLoading, api.getAccountBalance, action.type, action.payload);
+    if (action.callback) {
+      yield call(action.callback, res);
+    }
+  } catch (err) {
+    if (err.message) {
+      console.log(err.message);
+    }
+  }
+}
+
+function* watchGetAccountBalance() {
+  yield takeLatest(types.GET_ACCOUNT_BALANCE, getAccountBalance)
+}
+
 const sagas = [
   watchGetPoll,
   watchGetPollVotes,
   watchGetPollList,
   watchGetWalletAccounts,
+  watchGetAccountBalance,
 ];
 
 export default sagas;

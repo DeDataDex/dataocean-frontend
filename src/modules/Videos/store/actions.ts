@@ -63,3 +63,12 @@ export function setPollList(payload: any) {
     payload
   };
 }
+
+
+export function getAccountBalance(payload: any, callback?: any) {
+  return {
+    type: types.GET_ACCOUNT_BALANCE,
+    payload,
+    callback
+  };
+}

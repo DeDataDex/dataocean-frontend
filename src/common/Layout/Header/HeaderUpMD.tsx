@@ -14,7 +14,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Tooltip from '@material-ui/core/Tooltip';
 import LanguageIcon from '@material-ui/icons/Translate';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import StarMaskOnboarding from '@starcoin/starmask-onboarding';
 import store from '@/Videos/store';
 import Tabs from './Tabs';
 
@@ -123,14 +122,13 @@ function Index(props: any) {
     setLanguageMenu(event.currentTarget);
   };
 
-  const [network, setNetwork] = useState('');
-
   // initial data
   const dispatch = useDispatch();
   // get window.starcoin
   const [starcoin, setStarcoin] = useState(window.starcoin);
   const [connectStatus, setConnectStatus] = useState(0);
   const [accountAddress, setAccountAddress] = useState('');
+  const [accountBalance, setAccountBalance] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
 
   // statusText fix: Solve problems that cannot be translated.
@@ -145,27 +143,22 @@ function Index(props: any) {
   const [onboarding, setOnBoarding] = useState<any>();
 
   // connectStatusChange callback
-  const handleNewAccounts = (newAccounts: string[]) => {
-    let id = window.location.href.split('/')[5]?.split('?')[0];
-    id = typeof +id === 'number' ? id : '';
+  const handleNewAccounts = (newAccounts: any[]) => {
+    console.log('handleNewAccounts',{newAccounts})
 
-    const isStarMaskConnected = newAccounts.length > 0;
-    console.log(id, isStarMaskConnected, 'sss');
-    if (isStarMaskConnected) {
+    const isWalletConnected = newAccounts.length > 0;
+    if (isWalletConnected) {
       // onAccountChange(newAccounts);
       setTextStatus(4);
       setConnectStatus(4);
-      setAccountAddress(newAccounts[0]);
-      if (process.env.REACT_APP_DATA_OCEAN_ADMIN_ADDRESS?.split(',').filter((address) => address.toLowerCase() === newAccounts[0]).length) {
+      setAccountAddress(newAccounts[0].address);
+      if (process.env.REACT_APP_DATA_OCEAN_ADMIN_ADDRESS?.split(',').filter((address) => address.toLowerCase() === newAccounts[0].address).length) {
         setIsAdmin(true)
       }else{
         setIsAdmin(false)
       }
-      if (onboarding) {
-        onboarding.stopOnboarding();
-      }
       dispatch(
-        store.actions.getPollVotes({ id, selectedAccount: newAccounts[0] }),
+        store.actions.getAccountBalance(newAccounts[0].address, (data: any) => setAccountBalance(data)),
       );
     } else {
       // disconnect
@@ -183,13 +176,13 @@ function Index(props: any) {
   // initialConnectStatus
   // Fixed the issue of refreshing page data presentation
   const initialConnectStatus = () => {
-    const isStarMaskInstalled = StarMaskOnboarding.isStarMaskInstalled();
-    const isStarMaskConnected = starcoin._state.accounts?.length > 0;
+    const isWalletInstalled = !!window.keplr;
+    const isWalletConnected = accountAddress.length > 0;
 
-    if (!isStarMaskInstalled) {
+    if (!isWalletInstalled) {
       setTextStatus(0);
       setConnectStatus(0);
-    } else if (isStarMaskConnected) {
+    } else if (isWalletConnected) {
       const accounts = starcoin._state.accounts;
       setTextStatus(4);
       setConnectStatus(4);
@@ -204,39 +197,23 @@ function Index(props: any) {
       setConnectStatus(1);
     }
 
-    if (isStarMaskInstalled) {
-      starcoin.on('accountsChanged', handleNewAccounts);
+    if (isWalletInstalled) {
+      window.starcoin?.on('accountsChanged', handleNewAccounts);
     }
   };
 
   useEffect(() => {
-    const currentUrl = new URL(window.location.href);
-    const forwarderOrigin =
-      currentUrl.hostname === 'localhost' ? 'http://localhost:9032' : undefined;
-
-    try {
-      setOnBoarding(new StarMaskOnboarding({ forwarderOrigin }));
-    } catch (error) {
-      console.error(error);
-    }
-
     initialConnectStatus();
   }, []);
 
-  function handleNewNetwork(network: any) {
-    setNetwork(network);
-  }
+  // function handleNewNetwork(network: any) {
+  //   setNetwork(network);
+  // }
 
   if (window.starcoin) {
-    window.starcoin.on('accountsChanged', handleNewAccounts);
-    window.starcoin.on('networkChanged', handleNewNetwork);
+    window.starcoin?.on('accountsChanged', handleNewAccounts);
+    // window.starcoin?.on('networkChanged', handleNewNetwork);
   }
-
-  useEffect(() => {
-    if (window.starcoin && window.starcoin.networkVersion) {
-      setNetwork(window.starcoin && window.starcoin.networkVersion);
-    }
-  }, []);
 
   useEffect(() => {
     if (window.starcoin && window.starcoin.selectedAddress) {
@@ -245,13 +222,13 @@ function Index(props: any) {
   }, []);
 
   async function connectWallet() {
+    console.log({connectStatus})
     // wallet click
     if (connectStatus === 0) {
+      window.open('https://chrome.google.com/webstore/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap', '_blank')
       // setText installing
       setTextStatus(2);
       setButtonDisable(true);
-      // open chrome extension page
-      onboarding.startOnboarding();
     } else if (connectStatus === 1) {
       setTextStatus(3);
       setButtonDisable(true);
@@ -366,10 +343,15 @@ function Index(props: any) {
           >
             {textStatus !== 4
               ? textContent[textStatus]
-              : `${accountAddress.substr(0, 4)}....${accountAddress.substring(
+              : `${accountAddress.substr(0, 10)}....${accountAddress.substring(
                   accountAddress.length - 4,
                 )}`}
           </Button>
+          {textStatus == 4 && accountBalance ? (
+            <Typography variant="body1">
+              {accountBalance}
+            </Typography>
+          ) : null}
         </Box>
       </div>
     </div>
