@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { createStyles, withStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
-import ConnectWallet from '@/Videos/components/ConnectWallet/adapter';
 
 const useStyles = (theme: Theme) =>
   createStyles({
@@ -153,7 +152,6 @@ class PageViewHeader extends React.PureComponent<Props> {
           </Typography>
         </div>
         <div className={classes.rightHeader}>
-          {/* <ConnectWallet id={this.props.id} onAccountChange={onAccountChange} /> */}
         </div>
       </div>
     );

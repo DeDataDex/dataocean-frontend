@@ -19,7 +19,6 @@ import { POLL_STATUS } from '@/utils/constants';
 import client from '@/utils/client';
 import { getNetwork } from '@/utils/helper';
 import { LoadingOutlined } from '@ant-design/icons';
-import ConnectWallet from '@/Videos/components/ConnectWallet/adapter';
 import Link from '@material-ui/core/Link';
 import { NavLink } from 'react-router-dom';
 import account from 'mobxStore/account';
