@@ -163,7 +163,7 @@ function Index(props: any) {
 
   // set a default value before locales/*/transaction.json is loaded
   const current = LANGUAGES_LABEL.filter((language) => language.code === userLanguage);
-  const currentLabel = current[0] && current[0].text || '-';
+  const currentLabel = (current[0] && current[0].text) || '-';
 
   const { classes } = props;
   const location = window.location;

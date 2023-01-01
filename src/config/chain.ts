@@ -12,11 +12,11 @@ export const getChainInfo = (): ChainInfo => ({
 	},
 	bech32Config: {
 		bech32PrefixAccAddr: "cosmos",
-		bech32PrefixAccPub: "cosmos" + "pub",
-		bech32PrefixValAddr: "cosmos" + "valoper",
-		bech32PrefixValPub: "cosmos" + "valoperpub",
-		bech32PrefixConsAddr: "cosmos" + "valcons",
-		bech32PrefixConsPub: "cosmos" + "valconspub",
+		bech32PrefixAccPub: "cosmospub",
+		bech32PrefixValAddr: "cosmosvaloper",
+		bech32PrefixValPub: "cosmosvaloperpub",
+		bech32PrefixConsAddr: "cosmosvalcons",
+		bech32PrefixConsPub: "cosmosvalconspub",
 	},
 	currencies: [
 		{
