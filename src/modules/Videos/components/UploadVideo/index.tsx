@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Helmet from 'react-helmet';
-import StarMaskOnboarding from '@starcoin/starmask-onboarding';
 import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import Grid from '@material-ui/core/Grid';
@@ -101,6 +100,7 @@ interface UploadVideoProps {
   // onClose: () => void;
   // afterSubmit: () => void;
   defaultCreator?: string;
+  accounts: any[];
 }
 
 const fields = {
@@ -128,6 +128,7 @@ const UploadVideo = ({
   // afterSubmit,
   id,
   defaultCreator,
+  accounts,
 }: UploadVideoProps) => {
   const [form, setForm] = useState<Record<string, any>>(fields);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
@@ -264,7 +265,8 @@ const UploadVideo = ({
     // check isAdmin
     const isWalletInstalled = !!window.keplr;
     if (isWalletInstalled) {
-      if (process.env.REACT_APP_DATA_OCEAN_ADMIN_ADDRESS?.split(',').filter((address) => address.toLowerCase() === window.starcoin.selectedAddress).length) {
+      const accountAddress = accounts && accounts.length ? accounts[0].address : ''
+      if (accountAddress && process.env.REACT_APP_DATA_OCEAN_ADMIN_ADDRESS?.split(',').filter((address) => address.toLowerCase() === accountAddress).length) {
         setIsAdmin(true)
       }else {
         setIsAdmin(false)
@@ -300,7 +302,7 @@ const UploadVideo = ({
       }
     };
     init();
-  }, [open, id, defaultCreator, network]);
+  }, [open, id, defaultCreator, network, accounts]);
 
   moment.locale(t('video.locale'));
 

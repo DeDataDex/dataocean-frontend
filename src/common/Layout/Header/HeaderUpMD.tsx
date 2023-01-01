@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import Box from '@material-ui/core/Box';
+import { NavLink } from 'react-router-dom';
 import MenuItem from '@material-ui/core/MenuItem';
 import Tooltip from '@material-ui/core/Tooltip';
 import LanguageIcon from '@material-ui/icons/Translate';
@@ -171,7 +172,6 @@ function Index(props: any) {
     setButtonDisable(false);
   }, [dispatch]);
 
-  // initialConnectStatus
   // Fixed the issue of refreshing page data presentation
   const initialConnectStatus = useCallback(() => {
     const isWalletInstalled = !!window.keplr;
@@ -181,42 +181,19 @@ function Index(props: any) {
       setTextStatus(0);
       setConnectStatus(0);
     } else if (isWalletConnected) {
-      const accounts = window.starcoin._state.accounts;
       setTextStatus(4);
       setConnectStatus(4);
-      setAccountAddress(accounts[0]);
-
-      handleNewAccounts(accounts);
-      
     } else {
       setTextStatus(1);
       setConnectStatus(1);
     }
-
-    if (isWalletInstalled) {
-      window.starcoin?.on('accountsChanged', handleNewAccounts);
-    }
-  }, [accountAddress, handleNewAccounts]);
-
-  
-  // function handleNewNetwork(network: any) {
-  //   setNetwork(network);
-  // }
-
-  if (window.starcoin) {
-    window.starcoin?.on('accountsChanged', handleNewAccounts);
-    // window.starcoin?.on('networkChanged', handleNewNetwork);
-  }
+  }, [accountAddress]);
 
   useEffect(() => {
-    if (window.starcoin && window.starcoin.selectedAddress) {
-      setAccountAddress(window.starcoin.selectedAddress);
-    }
     initialConnectStatus()
-  }, []);
+  }, [initialConnectStatus]);
 
   async function connectWallet() {
-    console.log({connectStatus})
     // wallet click
     if (connectStatus === 0) {
       window.open('https://chrome.google.com/webstore/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap', '_blank')
@@ -324,7 +301,7 @@ function Index(props: any) {
         </div>
         <Box display="flex" alignItems="center" className={classes.rightBox}>
           {isAdmin ? (
-            <Button href="/admin/upload" variant="outlined" className={classes.darkBgButton}>
+            <Button component={NavLink} to="/videos/upload" variant="outlined" className={classes.darkBgButton}>
               {t('header.admin')}
             </Button>
           ) : null}

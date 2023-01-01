@@ -86,6 +86,7 @@ interface ExternalProps {
 }
 
 interface InternalProps {
+  accounts: any[];
   pollList: any;
   isLoadingMore: boolean;
   getPollList: (contents: any, callback?: any) => any;
@@ -116,6 +117,7 @@ interface IndexState {
 class List extends PureComponent<Props, IndexState> {
   // eslint-disable-next-line react/static-property-placement
   static defaultProps = {
+    accounts: [],
     pollList: null,
     isLoadingMore: undefined,
     getPollList: () => { },

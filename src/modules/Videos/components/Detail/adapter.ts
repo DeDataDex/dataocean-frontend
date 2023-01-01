@@ -13,9 +13,9 @@ const selector = createSelector(
   currentSelector,
   loadingSelector,
   (current, loading) => ({
+    accounts: current.accounts,
     poll: current.poll,
     pollVotes: current.pollVotes,
-    accounts: current.accounts,
     loading
   })
 );

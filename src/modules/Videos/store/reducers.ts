@@ -4,7 +4,7 @@ const initState = {
   poll: null,
   pollList: null,
   pollVotes: null,
-  accounts: null,
+  accounts: [],
   isLoadingMore: false,
 };
 

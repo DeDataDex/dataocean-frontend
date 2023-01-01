@@ -4,7 +4,6 @@ import { withTranslation } from 'react-i18next';
 import StarMaskOnboarding from '@starcoin/starmask-onboarding';
 import { createStyles, withStyles, Theme } from '@material-ui/core/styles';
 import CenteredView from '@/common/View/CenteredView';
-import { providers } from '@starcoin/starcoin';
 import MOCK_VIDEO_LIST from '../../../../mocks/videoList.json'
 import VideoPlayer from './VideoPlayer'
 import VideoInfo from './VideoInfo';
@@ -187,7 +186,7 @@ interface IndexProps {
   match: any;
   poll: any;
   pollVotes: any;
-  accounts: string[];
+  accounts: any[];
   getPoll: (data: any, callback?: any) => any;
   history: any;
 }
@@ -217,20 +216,9 @@ class Detail extends PureComponent<IndexProps, IndexState> {
 
   maxFee: number = 0;
 
-  starcoinProvider: any;
 
   constructor(props: IndexProps) {
     super(props);
-
-    try {
-      // We must specify the network as 'any' for starcoin to allow network changes
-      this.starcoinProvider = new providers.Web3Provider(
-        window.starcoin,
-        'any',
-      );
-    } catch (error) {
-      console.error(error);
-    }
 
     this.state = {
       id: parseInt(props.match.params.id, 10),
