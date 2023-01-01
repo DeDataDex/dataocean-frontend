@@ -20,7 +20,6 @@ export const getWalletAccounts = async () => {
         return;
     }
 
-    console.log('getWalletAccounts', { chain })
     await window.keplr.experimentalSuggestChain(chain)
     await window.keplr.enable(chain.chainId)
     const offlineSigner = window.keplr.getOfflineSigner(chain.chainId)
@@ -31,12 +30,10 @@ export const getWalletAccounts = async () => {
         )
     }
     const accounts = await offlineSigner.getAccounts()
-    console.log({ accounts })
     return accounts;
 }
 
 export const getAccountBalance = async (address: any) => {
-    console.log('getAccountBalance', { address })
     if (!window.keplr) {
         alert("Please install keplr extension");
         return;
@@ -46,6 +43,5 @@ export const getAccountBalance = async (address: any) => {
         return;
     }
     const balance = await signingStargateClient.getBalance(address, chain.stakeCurrency.coinMinimalDenom)
-    console.log({ balance })
     return `${ balance.amount } ${ balance.denom }`;
 }

@@ -112,6 +112,13 @@ const useStyles = (theme: Theme) =>
         display: 'block',
       },
     },
+    admin:{
+      color: '#fff',
+      backgroundColor: '#f44336',
+      "&:hover": {
+        backgroundColor: '#f44336',
+      }
+    }
   });
 
 function Index(props: any) {
@@ -300,7 +307,7 @@ function Index(props: any) {
         </div>
         <Box display="flex" alignItems="center" className={classes.rightBox}>
           {isAdmin ? (
-            <Button component={NavLink} to="/videos/upload" variant="outlined" className={classes.darkBgButton}>
+            <Button component={NavLink} to="/videos/upload" variant="outlined" className={classNames(classes.darkBgButton, classes.admin)}>
               {t('header.admin')}
             </Button>
           ) : null}
@@ -318,9 +325,9 @@ function Index(props: any) {
                 )}`}
           </Button>
           {textStatus === 4 && accountBalance ? (
-            <Typography variant="body1">
+            <Button variant="outlined" className={classes.darkBgButton}>
               {accountBalance}
-            </Typography>
+            </Button>
           ) : null}
         </Box>
       </div>
