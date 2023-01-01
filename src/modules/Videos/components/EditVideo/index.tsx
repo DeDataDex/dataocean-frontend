@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Helmet from 'react-helmet';
-import { useHistory } from 'react-router-dom';
 import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -11,10 +10,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import CenteredView from '@/common/View/CenteredView';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
@@ -108,7 +104,6 @@ interface PollDialogProps {
   // onClose: () => void;
   // afterSubmit: () => void;
   defaultCreator?: string;
-  computedMatch: any;
 }
 
 const fields = {
@@ -138,13 +133,9 @@ const PollDialog = ({
   // afterSubmit,
   id,
   defaultCreator,
-  computedMatch,
 }: PollDialogProps) => {
   const [form, setForm] = useState<Record<string, any>>(fields);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
-
-  const pollDatabaseID = computedMatch.params.id;
-  console.log('poll id', pollDatabaseID);
 
   const helperTextMaps = {
     titleEn: 'Please input title.',
@@ -279,7 +270,6 @@ const PollDialog = ({
     endTime,
     typeArgs1,
     idOnChain,
-    databaseID,
     forVotes,
     againstVotes,
     status,
@@ -289,35 +279,7 @@ const PollDialog = ({
   useEffect(() => {
     const init = async () => {
       if (!open) {
-        // 此时为添加，会带上默认 creator
-        /*
-        if (id === undefined) {
-          // setForm({ ...fields, creator: defaultCreator });
-          setForm({ ...fields });
-        } else {
-          const detail = await client.get(`get?id=${id}&network=${network}`);
-          setForm({
-            title: detail.title,
-            titleEn: detail.titleEn,
-            descriptionEn: detail.descriptionEn,
-            description: detail.description,
-            creator: detail.creator,
-            network: detail.network,
-            status: detail.status,
-            link: detail.link,
-            typeArgs1: detail.typeArgs1,
-            idOnChain: detail.idOnChain,
-            databaseID: detail.id,
-            forVotes: detail.forVotes,
-            againstVotes: detail.againstVotes,
-            endTime: detail.endTime,
-            id: detail.id,
-          });
-        }
-        */
-        // const detail = await client.get(`get?id=${id}&network=${network}`);
-        const detail = await client.get(`videos/detail/${pollDatabaseID}`);
-        console.log('detail edit', detail)
+        const detail = await client.get(`videos/detail/${id}`);
         setForm({
           title: detail.title,
           titleEn: detail.titleEn,

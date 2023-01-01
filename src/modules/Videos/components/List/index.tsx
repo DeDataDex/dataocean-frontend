@@ -1,27 +1,12 @@
-import React, { useEffect, PureComponent } from 'react';
+import { PureComponent } from 'react';
 import { withTranslation } from 'react-i18next';
-import i18n from 'i18next';
 import Helmet from 'react-helmet';
 import StarMaskOnboarding from '@starcoin/starmask-onboarding';
 import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import CardHeader from '@material-ui/core/CardHeader';
-import Divider from '@material-ui/core/Divider';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 import CenteredView from '@/common/View/CenteredView';
-import { POLL_STATUS } from '@/utils/constants';
-import client from '@/utils/client';
-import { getNetwork } from '@/utils/helper';
 import { LoadingOutlined } from '@ant-design/icons';
-import Link from '@material-ui/core/Link';
-import { NavLink } from 'react-router-dom';
-import account from 'mobxStore/account';
 import VideoCard from './VideoCard';
 import MOCK_VIDEO_LIST from '../../../../mocks/videoList.json'
 
@@ -201,17 +186,11 @@ class List extends PureComponent<Props, IndexState> {
 
   render() {
     const { t, classes } = this.props;
-    const suffix = i18n.language === 'en' ? 'En' : '';
     const {
-      hideVoted,
-      status,
-      open,
       list,
       loading,
       page,
       totalPage,
-      accounts,
-      isAdmin
     } = this.state;
 
     const menus = [{ label: t('video.all'), value: 0 }];

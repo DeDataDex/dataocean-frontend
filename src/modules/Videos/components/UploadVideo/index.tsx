@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Helmet from 'react-helmet';
 import StarMaskOnboarding from '@starcoin/starmask-onboarding';
 import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 import { withTranslation } from 'react-i18next';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -11,13 +9,8 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import CenteredView from '@/common/View/CenteredView';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import client from '@/utils/client';
 import moment from 'moment';
@@ -122,7 +115,6 @@ const fields = {
   typeArgs1: '',
   idOnChain: '',
   endTime: '',
-  forVotes: '',
   againstVotes: '',
 };
 
@@ -153,7 +145,6 @@ const UploadVideo = ({
     network: t('video.networkHelperText'),
     typeArgs1: t('video.type_args_1HelperText'),
     idOnChain: t('video.id_on_chainHelperText'),
-    forVotes: t('video.forVotesHelperText'),
     againstVotes: t('video.againstVotesHelperText'),
   };
 
@@ -215,7 +206,6 @@ const UploadVideo = ({
         typeArgs1: "0x1::Test::Test",
         status: 7,
         againstVotes: 100,
-        forVotes: 1000,
         endTime: 1699999999
       };
       */
@@ -267,16 +257,13 @@ const UploadVideo = ({
     endTime,
     typeArgs1,
     idOnChain,
-    forVotes,
-    againstVotes,
-    status,
     network,
   } = form;
 
   useEffect(() => {
     // check isAdmin
-    const isStarMaskInstalled = StarMaskOnboarding.isStarMaskInstalled();
-    if (isStarMaskInstalled) {
+    const isWalletInstalled = !!window.keplr;
+    if (isWalletInstalled) {
       if (process.env.REACT_APP_DATA_OCEAN_ADMIN_ADDRESS?.split(',').filter((address) => address.toLowerCase() === window.starcoin.selectedAddress).length) {
         setIsAdmin(true)
       }else {

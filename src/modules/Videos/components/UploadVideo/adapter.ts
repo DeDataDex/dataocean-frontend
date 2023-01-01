@@ -14,6 +14,7 @@ const selector = createSelector(
   currentSelector,
   loadingSelector,
   (current, loading) => ({
+
     pollList: current.pollList,
     isLoadingMore: current.isLoadingMore,
     loading

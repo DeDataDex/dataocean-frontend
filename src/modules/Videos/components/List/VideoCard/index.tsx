@@ -1,14 +1,9 @@
-import React, { PureComponent } from 'react';
+import { PureComponent } from 'react';
 import { withTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
-import BigNumber from 'bignumber.js';
 import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import { getPollData } from '@/utils/sdk';
-import { POLL_STATUS } from '@/utils/constants';
 import Link from '@material-ui/core/Link';
 import { NavLink } from 'react-router-dom';
 import MOCK_VIDEO_LIST from '../../../../../mocks/videoList.json'
@@ -174,10 +169,7 @@ class VideoCard extends PureComponent<Props, PollCardState> {
     name,
     desc,
     picUrl,
-    videoUrl,
     price,
-    duration,
-    size,
       classes,
       t,
     } = this.props;

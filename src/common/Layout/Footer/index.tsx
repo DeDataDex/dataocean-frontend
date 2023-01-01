@@ -1,9 +1,7 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
-const year = new Date().getFullYear();
 
 const useStyles = makeStyles((theme) => ({
   [theme.breakpoints.down('sm')]: {

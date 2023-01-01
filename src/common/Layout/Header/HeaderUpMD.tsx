@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { LANGUAGES_LABEL } from '@/utils/constants';
@@ -125,7 +125,6 @@ function Index(props: any) {
   // initial data
   const dispatch = useDispatch();
   // get window.starcoin
-  const [starcoin, setStarcoin] = useState(window.starcoin);
   const [connectStatus, setConnectStatus] = useState(0);
   const [accountAddress, setAccountAddress] = useState('');
   const [accountBalance, setAccountBalance] = useState('');
@@ -140,10 +139,9 @@ function Index(props: any) {
   ];
   const [textStatus, setTextStatus] = useState(0);
   const [buttonDisable, setButtonDisable] = useState(false);
-  const [onboarding, setOnBoarding] = useState<any>();
 
   // connectStatusChange callback
-  const handleNewAccounts = (newAccounts: any[]) => {
+  const handleNewAccounts = useCallback( (newAccounts: any[]) => {
     console.log('handleNewAccounts',{newAccounts})
 
     const isWalletConnected = newAccounts.length > 0;
@@ -171,11 +169,11 @@ function Index(props: any) {
 
     dispatch(store.actions.setWalletAccounts(newAccounts));
     setButtonDisable(false);
-  };
+  }, [dispatch]);
 
   // initialConnectStatus
   // Fixed the issue of refreshing page data presentation
-  const initialConnectStatus = () => {
+  const initialConnectStatus = useCallback(() => {
     const isWalletInstalled = !!window.keplr;
     const isWalletConnected = accountAddress.length > 0;
 
@@ -183,15 +181,13 @@ function Index(props: any) {
       setTextStatus(0);
       setConnectStatus(0);
     } else if (isWalletConnected) {
-      const accounts = starcoin._state.accounts;
+      const accounts = window.starcoin._state.accounts;
       setTextStatus(4);
       setConnectStatus(4);
       setAccountAddress(accounts[0]);
 
       handleNewAccounts(accounts);
-      if (onboarding) {
-        onboarding.stopOnboarding();
-      }
+      
     } else {
       setTextStatus(1);
       setConnectStatus(1);
@@ -200,12 +196,9 @@ function Index(props: any) {
     if (isWalletInstalled) {
       window.starcoin?.on('accountsChanged', handleNewAccounts);
     }
-  };
+  }, [accountAddress, handleNewAccounts]);
 
-  useEffect(() => {
-    initialConnectStatus();
-  }, []);
-
+  
   // function handleNewNetwork(network: any) {
   //   setNetwork(network);
   // }
@@ -219,6 +212,7 @@ function Index(props: any) {
     if (window.starcoin && window.starcoin.selectedAddress) {
       setAccountAddress(window.starcoin.selectedAddress);
     }
+    initialConnectStatus()
   }, []);
 
   async function connectWallet() {
@@ -347,7 +341,7 @@ function Index(props: any) {
                   accountAddress.length - 4,
                 )}`}
           </Button>
-          {textStatus == 4 && accountBalance ? (
+          {textStatus === 4 && accountBalance ? (
             <Typography variant="body1">
               {accountBalance}
             </Typography>

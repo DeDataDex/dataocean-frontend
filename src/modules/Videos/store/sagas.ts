@@ -1,4 +1,4 @@
-import { call, put, takeLatest, delay, fork } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import withLoading from '@/sagaMiddleware/index';
 import * as api from './apis';
 import * as actions from './actions';

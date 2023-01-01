@@ -1,41 +1,10 @@
 /* eslint-disable func-names */
-import React, { PureComponent,RefObject } from 'react';
-import ReactHlsPlayer from 'react-hls-player';
-import i18n from 'i18next';
+import { PureComponent } from 'react';
 import { withTranslation } from 'react-i18next';
-import get from 'lodash/get';
 import StarMaskOnboarding from '@starcoin/starmask-onboarding';
 import { createStyles, withStyles, Theme } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Loading from '@/common/Loading';
 import CenteredView from '@/common/View/CenteredView';
-import CommonLink from '@/common/Link';
-import Markdown from '@/common/Markdown';
-import formatNumber from '@/utils/formatNumber';
-import { formatBalance } from '@/utils/helper';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
-import { NavLink } from 'react-router-dom';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Dialog from '@material-ui/core/Dialog';
-import Alert from '@material-ui/lab/Alert';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import { getPollData, getAddressSTCBalance, getPollAccountVotes } from '@/utils/sdk';
-import { providers, utils, bcs } from '@starcoin/starcoin';
-import { POLL_STATUS } from '@/utils/constants';
-import client from '@/utils/client';
-import qs from 'qs';
+import { providers } from '@starcoin/starcoin';
 import MOCK_VIDEO_LIST from '../../../../mocks/videoList.json'
 import VideoPlayer from './VideoPlayer'
 import VideoInfo from './VideoInfo';
@@ -237,8 +206,6 @@ interface IndexState {
   isAdmin: boolean;
 }
 
-let startToVerify: boolean = false;
-
 class Detail extends PureComponent<IndexProps, IndexState> {
   // eslint-disable-next-line react/static-property-placement
   static defaultProps = {
@@ -294,7 +261,7 @@ class Detail extends PureComponent<IndexProps, IndexState> {
   };
 
   init = async () => {
-    const { match, history } = this.props;
+    const { match } = this.props;
     const id = match.params.id;
     
     // const detail = await client.get(`videos/detail/${id}`);
