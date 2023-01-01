@@ -1,7 +1,6 @@
 /* eslint-disable func-names */
 import { PureComponent } from 'react';
 import { withTranslation } from 'react-i18next';
-import StarMaskOnboarding from '@starcoin/starmask-onboarding';
 import { createStyles, withStyles, Theme } from '@material-ui/core/styles';
 import CenteredView from '@/common/View/CenteredView';
 import MOCK_VIDEO_LIST from '../../../../mocks/videoList.json'
@@ -202,7 +201,6 @@ interface IndexState {
   rowsPerPage: number;
   detail: Record<string, any>;
   pollDialogOpen: boolean;
-  isAdmin: boolean;
 }
 
 class Detail extends PureComponent<IndexProps, IndexState> {
@@ -215,7 +213,6 @@ class Detail extends PureComponent<IndexProps, IndexState> {
   };
 
   maxFee: number = 0;
-
 
   constructor(props: IndexProps) {
     super(props);
@@ -231,20 +228,10 @@ class Detail extends PureComponent<IndexProps, IndexState> {
       rowsPerPage: 5,
       detail: {},
       pollDialogOpen: false,
-      isAdmin: false,
     };
   }
 
   componentDidMount = async () => {
-    const isStarMaskInstalled = StarMaskOnboarding.isStarMaskInstalled();
-    if (isStarMaskInstalled) {
-      if (process.env.REACT_APP_DATA_OCEAN_ADMIN_ADDRESS?.split(',').filter((address) => address.toLowerCase() === window.starcoin.selectedAddress).length) {
-        this.setState({
-          isAdmin: true
-        })
-      }
-    };
-
     this.init();
   };
 

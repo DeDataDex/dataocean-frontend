@@ -125,7 +125,6 @@ function Index(props: any) {
 
   // initial data
   const dispatch = useDispatch();
-  // get window.starcoin
   const [connectStatus, setConnectStatus] = useState(0);
   const [accountAddress, setAccountAddress] = useState('');
   const [accountBalance, setAccountBalance] = useState('');

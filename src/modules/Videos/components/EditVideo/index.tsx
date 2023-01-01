@@ -500,38 +500,6 @@ const PollDialog = ({
                 ))}
               </Select>
             </FormControl>
-            <FormControl>
-              <InputLabel id="network-simple-select-label">
-                {t('video.network')}
-              </InputLabel>
-              <Select
-                margin="dense"
-                labelId="network-simple-select-label"
-                id="network"
-                name="network"
-                style={{ width: 150 }}
-                value={network}
-                error={errors.network}
-                label={t('video.network')}
-                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                  setForm({
-                    ...form,
-                    network: event.target.value as number,
-                  });
-                  setErrors({
-                    ...errors,
-                    network: false,
-                  });
-                }}
-              >
-                {process.env.REACT_APP_STARCOIN_NETWORKS &&
-                  process.env.REACT_APP_STARCOIN_NETWORKS.split(',').map((net) => (
-                    <MenuItem value={net} key={net}>
-                      {net}
-                    </MenuItem>
-                  ))}
-              </Select>
-            </FormControl>
           </Box>
           <Box className={classes.formBox}>
             <DialogActions>

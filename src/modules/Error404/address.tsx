@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import { PureComponent } from 'react';
 import { withTranslation } from 'react-i18next';
 import Helmet from 'react-helmet';
 import { getNetwork } from '@/utils/helper';
@@ -32,7 +32,7 @@ interface IndexProps {
 class Index extends PureComponent<IndexProps> {
   render() {
     const { classes, t, address } = this.props;
-    const networkString = getNetwork() || 'main';
+    const networkString = getNetwork();
     const networkCapitalized = networkString.charAt(0).toUpperCase() + networkString.slice(1);
     return (
       <div>

@@ -1,7 +1,6 @@
 import { PureComponent } from 'react';
 import { withTranslation } from 'react-i18next';
 import Helmet from 'react-helmet';
-import StarMaskOnboarding from '@starcoin/starmask-onboarding';
 import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
@@ -107,12 +106,7 @@ interface IndexState {
   loading: boolean;
   totalPage: number;
   accounts: Array<any>;
-  isAdmin: boolean;
 }
-
-// const isLocal = window.location.host.includes('localhost');
-// const isLocal = window.starcoin.selectedAddrerss === '0xc4800d2c0c24ac6e068010fadacd2d5e';
-// let isLocal = false;
 
 class List extends PureComponent<Props, IndexState> {
   // eslint-disable-next-line react/static-property-placement
@@ -135,24 +129,11 @@ class List extends PureComponent<Props, IndexState> {
       list: [],
       totalPage: 1,
       accounts: [],
-      isAdmin: false,
     };
   }
 
   componentDidMount() {
     this.fetchList(parseInt(this.props.match.params.page, 10) || 1);
-
-    const isStarMaskInstalled = StarMaskOnboarding.isStarMaskInstalled();
-    if (isStarMaskInstalled) {
-      this.setState({
-        accounts: [window.starcoin.selectedAddress]
-      })
-      if (process.env.REACT_APP_DATA_OCEAN_ADMIN_ADDRESS?.split(',').filter((address) => address.toLowerCase() === window.starcoin.selectedAddress).length) {
-        this.setState({
-          isAdmin: true
-        })
-      }
-    }
   }
 
   fetchList = async (page = 1) => {
@@ -164,9 +145,6 @@ class List extends PureComponent<Props, IndexState> {
       loading: true,
     });
     try {
-      // const resp = await client.get(
-      //   `videos/page/${getNetwork()}?page=${page}&count=20`,
-      // );
       const resp = MOCK_VIDEO_LIST.data
       const newlist = list.concat(resp.list);
       const totalPage = resp.totalPage;

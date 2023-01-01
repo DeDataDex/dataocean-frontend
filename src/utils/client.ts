@@ -1,13 +1,7 @@
 import axios from 'axios';
 
-// const apiUrl = window.location.host.includes('localhost')
-//   ? 'http://localhost:33330'
-//   : process.env.REACT_APP_STARCOIN_POLL_API_URL;
-
-// const baseURL = `${apiUrl}/poll`;
-
-const apiUrl = process.env.REACT_APP_STARCOIN_POLL_API_URL;
-const baseURL = `${apiUrl}/v1`;
+const apiUrl = process.env.REACT_APP_DATA_OCEAN_API_URL;
+const baseURL = `${ apiUrl }/v1`;
 
 const clientConfig = {
   baseURL,
