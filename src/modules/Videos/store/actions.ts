@@ -72,3 +72,10 @@ export function getAccountBalance(payload: any, callback?: any) {
     callback
   };
 }
+
+export function getVideoServerNotify(payload: any) {
+  return {
+    type: types.GET_VIDEO_SERVER_NOTIFY,
+    payload,
+  };
+}

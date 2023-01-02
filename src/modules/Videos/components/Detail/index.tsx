@@ -255,9 +255,17 @@ class Detail extends PureComponent<IndexProps, IndexState> {
 
   render() {
     const {detail} = this.state;
+    const {accounts} = this.props;
+    
+    const accountAddress = (accounts && accounts.length) ? accounts[0].address : ''
     return (
       <CenteredView>
-        <VideoPlayer src={detail.videoUrl} />
+        {accountAddress ? (
+          <VideoPlayer src={detail.videoUrl} accountAddress={accountAddress}/>
+        ) : (
+          'Please connect wallet to play video'
+        )
+        } 
         <VideoInfo
           key={detail.id}
           id={detail.id}

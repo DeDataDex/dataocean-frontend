@@ -70,11 +70,26 @@ function* watchGetAccountBalance() {
   yield takeLatest(types.GET_ACCOUNT_BALANCE, getAccountBalance)
 }
 
+export function* getVideoServerNotify(action: ReturnType<typeof actions.getVideoServerNotify>) {
+  try {
+    yield call(withLoading, api.getVideoServerNotify, action.type, action.payload);
+  } catch (err) {
+    if (err.message) {
+      console.log(err.message);
+    }
+  }
+}
+
+function* watchGetVideoServerNotify() {
+  yield takeLatest(types.GET_VIDEO_SERVER_NOTIFY, getVideoServerNotify)
+}
+
 const sagas = [
   watchGetPoll,
   watchGetPollList,
   watchGetWalletAccounts,
   watchGetAccountBalance,
+  watchGetVideoServerNotify,
 ];
 
 export default sagas;
