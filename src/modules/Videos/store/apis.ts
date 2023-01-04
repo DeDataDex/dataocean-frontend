@@ -10,9 +10,8 @@ const chain = getChainInfo();
 
 let signingStargateClient: any = null;
 
-export const getPoll = (params: any) => client.get(`block/${ network }/hash/${ params.hash }`);
+export const getVideo = (params: any) => client.get(`/dataocean/dataocean/video/${ params.id }`);
 export const getPollByHeight = (params: any) => client.get(`block/${ network }/height/${ params.height }`);
-export const getPollList = (params: any) => client.get(`block/${ params.network ? params.network : network }/page/${ params.page }${ params.total ? `?total=${ params.total }` : '' }`);
 
 export const getWalletAccounts = async () => {
     if (!window.keplr) {

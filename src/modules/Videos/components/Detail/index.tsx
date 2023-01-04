@@ -1,9 +1,9 @@
 /* eslint-disable func-names */
 import { PureComponent } from 'react';
 import { withTranslation } from 'react-i18next';
+import { LoadingOutlined } from '@ant-design/icons';
 import { createStyles, withStyles, Theme } from '@material-ui/core/styles';
 import CenteredView from '@/common/View/CenteredView';
-import MOCK_VIDEO_LIST from '../../../../mocks/videoList.json'
 import VideoPlayer from './VideoPlayer'
 import VideoInfo from './VideoInfo';
 
@@ -183,10 +183,11 @@ interface IndexProps {
   classes: any;
   t: any;
   match: any;
-  poll: any;
+  video: any;
+  videoList: any;
   pollVotes: any;
   accounts: any[];
-  getPoll: (data: any, callback?: any) => any;
+  getVideo: (data: any, callback?: any) => any;
   history: any;
 }
 
@@ -207,7 +208,8 @@ class Detail extends PureComponent<IndexProps, IndexState> {
   // eslint-disable-next-line react/static-property-placement
   static defaultProps = {
     match: {},
-    poll: undefined,
+    video: undefined,
+    videoList: undefined,
     pollVotes: undefined,
     accounts: [],
   };
@@ -236,47 +238,52 @@ class Detail extends PureComponent<IndexProps, IndexState> {
   };
 
   init = async () => {
-    const { match } = this.props;
+    const { match, videoList, video, getVideo } = this.props;
     const id = match.params.id;
     
     // const detail = await client.get(`videos/detail/${id}`);
-    const detail  = MOCK_VIDEO_LIST.data.list.filter(item => item.id === parseInt(id))[0]
-    // getPollData(detail.creator, detail.typeArgs1).then((data) => {
-    //   if (data && data.id === detail.id) {
-    //     this.setState({ pollData: data });
-    //   }
-    // });
+    console.log({video,videoList,id})
+    let detail = video || (videoList && videoList.length && videoList.filter((item:any) => item.id === parseInt(id))[0]);
 
-    this.setState({
-      detail,
-    });
+    if (!detail){
+      getVideo({id})
+    }
   };
 
 
   render() {
-    const {detail} = this.state;
+    const { match, videoList, video  } = this.props;
+    const id = match.params.id;
+    const detail = video || (videoList && videoList.length && videoList.filter((item:any) => item.id === parseInt(id))[0]);
     const {accounts} = this.props;
     
     const accountAddress = (accounts && accounts.length) ? accounts[0].address : ''
     return (
       <CenteredView>
         {accountAddress ? (
-          <VideoPlayer src={detail.videoUrl} accountAddress={accountAddress}/>
+          <VideoPlayer src={detail.videoLink} accountAddress={accountAddress}/>
         ) : (
           'Please connect wallet to play video'
         )
         } 
-        <VideoInfo
-          key={detail.id}
-          id={detail.id}
-          name={detail.name}
-          desc={detail.desc}
-          picUrl={detail.picUrl}
-          videoUrl={detail.videoUrl}
-          price={detail.price}
-          duration={detail.duration}
-          size={detail.size}
-        />
+        {
+          detail ? (
+            <VideoInfo
+              key={detail.id}
+              id={detail.id}
+              name={detail.title}
+              desc={detail.description}
+              picUrl={detail.coverLink}
+              videoUrl={detail.videoLink}
+              price={detail.priceMB }
+              duration={detail.duration || 360000}
+              size={detail.size || 536870912000}
+            />
+          ) : (
+            <LoadingOutlined />
+          )
+        }
+        
       </CenteredView>
     );
   }

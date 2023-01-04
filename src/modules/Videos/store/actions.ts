@@ -1,15 +1,15 @@
 import * as types from './constants';
 
-export function getPoll(payload: any) {
+export function getVideo(payload: any) {
   return {
-    type: types.GET_POLL,
+    type: types.GET_VIDEO,
     payload
   };
 }
 
-export function setPoll(payload: any) {
+export function setVideo(payload: any) {
   return {
-    type: types.SET_POLL,
+    type: types.SET_VIDEO,
     payload
   };
 }
@@ -49,17 +49,17 @@ export function getPollByHeight(payload: any) {
   };
 }
 
-export function getPollList(payload: any, callback?: any) {
+export function getVideoList(payload: any, callback?: any) {
   return {
-    type: types.GET_POLL_LIST,
+    type: types.GET_VIDEO_LIST,
     payload,
     callback
   };
 }
 
-export function setPollList(payload: any) {
+export function setVideoList(payload: any) {
   return {
-    type: types.SET_POLL_LIST,
+    type: types.GET_VIDEO_LIST,
     payload
   };
 }

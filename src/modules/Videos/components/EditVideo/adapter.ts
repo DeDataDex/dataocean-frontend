@@ -8,7 +8,7 @@ import Index from './index';
 
 const { selector: currentSelector, actions } = store;
 
-const loadingSelector = createLoadingSelector([types.GET_POLL_LIST]);
+const loadingSelector = createLoadingSelector([types.GET_VIDEO_LIST]);
 
 const selector = createSelector(
   currentSelector,
@@ -21,5 +21,5 @@ const selector = createSelector(
 );
 
 export default connect(selector, {
-  getPollList: actions.getPollList
+  getVideoList: actions.getVideoList
 })(Index) as any;

@@ -1,9 +1,9 @@
 export const SCOPENAME = 'module:videos';
 
 // info
-export const GET_POLL = `${ SCOPENAME }/GET_POLL`;
+export const GET_VIDEO = `${ SCOPENAME }/GET_VIDEO`;
+export const SET_VIDEO = `${ SCOPENAME }/SET_VIDEO`;
 export const GET_POLL_BY_HEIGHT = `${ SCOPENAME }/GET_POLL_BY_HEIGHT`;
-export const SET_POLL = `${ SCOPENAME }/SET_POLL`;
 
 export const GET_POLL_VOTES = `${ SCOPENAME }/GET_POLL_VOTES`;
 export const SET_POLL_VOTES = `${ SCOPENAME }/SET_POLL_VOTES`;
@@ -13,8 +13,8 @@ export const SET_WALLECT_ACCOUNTS = `${ SCOPENAME }/SET_WALLECT_ACCOUNTS`;
 
 
 // list
-export const GET_POLL_LIST = `${ SCOPENAME }/GET_POLL_LIST`;
-export const SET_POLL_LIST = `${ SCOPENAME }/SET_POLL_LIST`;
+export const GET_VIDEO_LIST = `${ SCOPENAME }/GET_VIDEO_LIST`;
+export const SET_VIDEO_LIST = `${ SCOPENAME }/SET_VIDEO_LIST`;
 
 export const GET_POLL_LIST_REQUEST = `${ SCOPENAME }/GET_POLL_LIST_REQUEST`;
 export const GET_POLL_LIST_SUCCESS = `${ SCOPENAME }/GET_POLL_LIST_SUCCESS`;

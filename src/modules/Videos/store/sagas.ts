@@ -4,10 +4,11 @@ import * as api from './apis';
 import * as actions from './actions';
 import * as types from './constants';
 
-export function* getPoll(action: ReturnType<typeof actions.getPoll>) {
+export function* getVideo(action: ReturnType<typeof actions.getVideo>) {
   try {
-    const res = yield call(withLoading, api.getPoll, action.type, action.payload);
-    yield put(actions.setPoll(res));
+    const res = yield call(withLoading, api.getVideo, action.type, action.payload);
+    console.log('saga getVideo', res)
+    yield put(actions.setVideo(res.Video));
   } catch (err) {
     if (err.message) {
       console.log(err.message);
@@ -15,8 +16,8 @@ export function* getPoll(action: ReturnType<typeof actions.getPoll>) {
   }
 }
 
-function* watchGetPoll() {
-  yield takeLatest(types.GET_POLL, getPoll)
+function* watchGetVideo() {
+  yield takeLatest(types.GET_VIDEO, getVideo)
 }
 
 export function* getWalletAccounts(action: ReturnType<typeof actions.connectWallet>) {
@@ -33,24 +34,6 @@ export function* getWalletAccounts(action: ReturnType<typeof actions.connectWall
 
 function* watchGetWalletAccounts() {
   yield takeLatest(types.GET_WALLECT_ACCOUNTS, getWalletAccounts)
-}
-
-export function* getPollList(action: ReturnType<typeof actions.getPollList>) {
-  try {
-    const res = yield call(withLoading, api.getPollList, action.type, action.payload);
-    yield put(actions.setPollList(res));
-    if (action.callback) {
-      yield call(action.callback);
-    }
-  } catch (err) {
-    if (err.message) {
-      yield put(actions.setPollList([]));
-    }
-  }
-}
-
-function* watchGetPollList() {
-  yield takeLatest(types.GET_POLL_LIST, getPollList)
 }
 
 export function* getAccountBalance(action: ReturnType<typeof actions.getAccountBalance>) {
@@ -85,8 +68,7 @@ function* watchGetVideoServerNotify() {
 }
 
 const sagas = [
-  watchGetPoll,
-  watchGetPollList,
+  watchGetVideo,
   watchGetWalletAccounts,
   watchGetAccountBalance,
   watchGetVideoServerNotify,

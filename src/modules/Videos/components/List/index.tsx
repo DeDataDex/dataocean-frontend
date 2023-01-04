@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import CenteredView from '@/common/View/CenteredView';
 import { LoadingOutlined } from '@ant-design/icons';
 import VideoCard from './VideoCard';
-import MOCK_VIDEO_LIST from '../../../../mocks/videoList.json'
+import client from '@/utils/client';
 
 const useStyles = (theme: Theme) =>
   createStyles({
@@ -86,9 +86,7 @@ interface ExternalProps {
 
 interface InternalProps {
   accounts: any[];
-  pollList: any;
   isLoadingMore: boolean;
-  getPollList: (contents: any, callback?: any) => any;
   classes: any;
   t: any;
   match: any;
@@ -112,9 +110,7 @@ class List extends PureComponent<Props, IndexState> {
   // eslint-disable-next-line react/static-property-placement
   static defaultProps = {
     accounts: [],
-    pollList: null,
     isLoadingMore: undefined,
-    getPollList: () => { },
   };
 
   constructor(props: Props) {
@@ -145,9 +141,11 @@ class List extends PureComponent<Props, IndexState> {
       loading: true,
     });
     try {
-      const resp = MOCK_VIDEO_LIST.data
-      const newlist = list.concat(resp.list);
-      const totalPage = resp.totalPage;
+      const resp = await client.get(
+        `dataocean/dataocean/video?page=${page}&count=20`,
+      );
+      const newlist = list.concat(resp.Video);
+      const totalPage = Math.ceil(resp.pagination.total / 20);
       this.setState({
         list: newlist,
         totalPage,
@@ -172,7 +170,6 @@ class List extends PureComponent<Props, IndexState> {
       page,
       totalPage,
     } = this.state;
-
     const menus = [{ label: t('video.all'), value: 0 }];
     for (let i = 1; i < 8; i++) {
       menus.push({
@@ -201,16 +198,16 @@ class List extends PureComponent<Props, IndexState> {
                   <VideoCard
                     key={`key_${index}`}
                     id={video.id}
-                    name={video.name}
-                    desc={video.desc}
-                    picUrl={video.picUrl}
-                    videoUrl={video.videoUrl}
-                    price={video.price}
-                    duration={video.duration}
-                    size={video.size}
+                    name={video.title}
+                    desc={video.description}
+                    picUrl={video.coverLink}
+                    videoUrl={video.videoLink}
+                    price={video.priceMB}
+                    duration={video.duration || 360000}
+                    size={video.size || 536870912000}
                   />
                 ))
-                : t('video.NoPoll')}
+                : t('video.NoVideos')}
             </div>
             {page < totalPage ? (
               <div style={{ padding: 16 }}>
