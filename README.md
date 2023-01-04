@@ -1,8 +1,9 @@
 ## Set Environment Variables
 
 ```
-export REACT_APP_DATA_OCEAN_API_URL=https://xxx
+export REACT_APP_DATA_OCEAN_API_URL=http://127.0.0.1:1317
 export REACT_APP_DATA_OCEAN_ADMIN_ADDRESS=0x...,0x...
+
 ```
 
 `REACT_APP_DATA_OCEAN_ADMIN_ADDRESS` is the address that can uplaod videos.
