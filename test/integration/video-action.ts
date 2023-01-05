@@ -1,6 +1,6 @@
 // import { toHex } from "@cosmjs/encoding"
 import { OfflineDirectSigner } from "@cosmjs/proto-signing"
-// import { Account, DeliverTxResponse, GasPrice } from "@cosmjs/stargate"
+import { Account, DeliverTxResponse, GasPrice } from "@cosmjs/stargate"
 // import { Log } from "@cosmjs/stargate/build/logs"
 // import { BroadcastTxSyncResponse } from "@cosmjs/tendermint-rpc"
 import { expect } from "chai"
@@ -8,8 +8,8 @@ import { expect } from "chai"
 import { config } from "dotenv"
 // import Long from "long"
 import _ from "../../environment"
-// import { CheckersSigningStargateClient } from "../../src/checkers_signingstargateclient"
-// import { CheckersExtension } from "../../src/modules/dataocean/queries"
+import { DataOceanSigningStargateClient } from "../../src/dataocean_signingstargateclient"
+import { DataOceanExtension } from "../../src/modules/dataocean/queries"
 // import {
 //     getCapturedPos,
 //     getCreatedGameId,
@@ -37,6 +37,20 @@ describe("Video Actions Test", function () {
         expect((await bobSigner.getAccounts())[0].address).to.equal(bob)
 
     })
+
+    // let aliceClient: DataOceanSigningStargateClient,
+    //     bobClient: DataOceanSigningStargateClient,
+    //     dataocean: DataOceanExtension["dataocean"]
+
+    // before("create signing clients", async function () {
+    //     aliceClient = await DataOceanSigningStargateClient.connectWithSigner(RPC_URL, aliceSigner, {
+    //         gasPrice: GasPrice.fromString("0stake"),
+    //     })
+    //     bobClient = await DataOceanSigningStargateClient.connectWithSigner(RPC_URL, bobSigner, {
+    //         gasPrice: GasPrice.fromString("0stake"),
+    //     })
+    //     dataocean = aliceClient.dataoceanQueryClient!.dataocean
+    // })
 
     it("empty test", async function () {
     })

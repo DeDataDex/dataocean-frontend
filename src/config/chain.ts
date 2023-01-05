@@ -1,6 +1,6 @@
 import { ChainInfo } from "@keplr-wallet/types"
 
-export const chainId = "dataOcean"
+export const chainId = "dataocean"
 
 export const getChainInfo = (): ChainInfo => ({
 	chainId: chainId,

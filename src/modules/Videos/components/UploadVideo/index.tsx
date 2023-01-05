@@ -13,8 +13,14 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import client from '@/utils/client';
 import moment from 'moment';
-
 import 'moment/locale/zh-cn';
+import { OfflineSigner } from "@cosmjs/proto-signing"
+import { chainId, getChainInfo } from '../../../../config/chain'
+import { DataOceanSigningStargateClient } from "../../../../dataocean_signingstargateclient"
+import { GasPrice } from "@cosmjs/stargate"
+import { DeliverTxResponse } from "@cosmjs/stargate"
+import { Log } from "@cosmjs/stargate/build/logs"
+import Long from "long"
 
 const useStyles = (theme: Theme) =>
   createStyles({
@@ -134,6 +140,8 @@ const UploadVideo = ({
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [isAdmin, setIsAdmin] = useState(false);
 
+  const chain = getChainInfo();
+
   const helperTextMaps = {
     titleEn: 'Please input title.',
     title: '请输入中文标题.',
@@ -188,53 +196,111 @@ const UploadVideo = ({
     // onClose();
   };
 
+  // const  getSigningStargateClient = async () => {
+  //   if (this.state.creator && this.state.signingClient)
+  //       return {
+  //           creator: this.state.creator,
+  //           signingClient: this.state.signingClient,
+  //       }
+  //   const { keplr } = window
+  //   if (!keplr) {
+  //       alert("You need to install Keplr")
+  //       throw new Error("You need to install Keplr")
+  //   }
+  //   await keplr.experimentalSuggestChain(getCheckersChainInfo())
+  //   const offlineSigner: OfflineSigner = keplr.getOfflineSigner!(checkersChainId)
+  //   const creator = (await offlineSigner.getAccounts())[0].address
+  //   const client: CheckersSigningStargateClient = await CheckersSigningStargateClient.connectWithSigner(
+  //       this.props.rpcUrl,
+  //       offlineSigner,
+  //       {
+  //           gasPrice: GasPrice.fromString("1stake"),
+  //       },
+  //   )
+  //   this.setState({ creator: creator, signingClient: client })
+  //   return { creator: creator, signingClient: client }
+  // }
+
   const handleSubmit = async () => {
     try {
-      const inputs = await validateFields();
-      inputs.description = inputs.description.replaceAll('\n', '\n\n');
-      inputs.descriptionEn = inputs.descriptionEn.replaceAll('\n', '\n\n');
-      // console.log({inputs});
-      /*
-      const values = {
-        creator: "0x1",
-        description: "testcn",
-        descriptionEn: "descn",
-        idOnChain: "5",
-        link: "http://test.org",
-        network: "main",
-        title: "testcn",
-        titleEn: "test",
-        typeArgs1: "0x1::Test::Test",
-        status: 7,
-        againstVotes: 100,
-        endTime: 1699999999
-      };
-      */
-
-      const params = new URLSearchParams();
-      const keys = Object.keys(inputs);
-      const values = Object.values(inputs);
-      keys.forEach((key, index) => {
-        // console.log(`${key}: ${values[key]}`);
-        params.append(key,values[index].toString())
-      });
-
-      const addURL = 'videos/add';
-
-      const postConfig = {
-        headers: {
-          // 'Authorization': 'Basic YWRtaW46YWRtaW4=',
-          'Authorization': 'Basic c3RhcmNvaW46QClAIUBTdGFyY29pbk9yZw==',
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept': '*/*'
+      const accountAddress = (accounts && accounts.length) ? accounts[0].address : ''
+      console.log({accountAddress})
+      const { keplr } = window
+        if (!keplr) {
+            alert("You need to install Keplr")
+            throw new Error("You need to install Keplr")
         }
-      };
+        await keplr.experimentalSuggestChain(chain)
+        console.log({chainId})
+        const offlineSigner: OfflineSigner = keplr.getOfflineSigner!(chainId)
+        console.log({offlineSigner})
+        const creator = (await offlineSigner.getAccounts())[0].address
+        console.log({creator, accountAddress},creator === accountAddress)
+        const client: DataOceanSigningStargateClient = await DataOceanSigningStargateClient.connectWithSigner(
+          chain.rpc,
+          offlineSigner,
+          {
+              gasPrice: GasPrice.fromString("1stake"),
+          },
+        )
+        console.log({client})
+        const result: DeliverTxResponse = await client.createVideo(accountAddress,
+          "title1",
+          "description1",
+          "coverLink1",
+          "videoLink1",
+          Long.fromNumber(10),
+           "auto" )
+        console.log({result})
+        const logs: Log[] = JSON.parse(result.rawLog!)
+        console.log({logs})
+        //logs.connectWithSigner.attributes.find((attribute: Attribute) => attribute.key == "game-index")!.val
 
-      await client.post(addURL, params, postConfig);
-      // await afterSubmit();
-      handleClose();
-      alert('Success');
-      window.location.href = '/';
+      // const inputs = await validateFields();
+      // inputs.description = inputs.description.replaceAll('\n', '\n\n');
+      // inputs.descriptionEn = inputs.descriptionEn.replaceAll('\n', '\n\n');
+      // // console.log({inputs});
+      // /*
+      // const values = {
+      //   creator: "0x1",
+      //   description: "testcn",
+      //   descriptionEn: "descn",
+      //   idOnChain: "5",
+      //   link: "http://test.org",
+      //   network: "main",
+      //   title: "testcn",
+      //   titleEn: "test",
+      //   typeArgs1: "0x1::Test::Test",
+      //   status: 7,
+      //   againstVotes: 100,
+      //   endTime: 1699999999
+      // };
+      // */
+
+      // const params = new URLSearchParams();
+      // const keys = Object.keys(inputs);
+      // const values = Object.values(inputs);
+      // keys.forEach((key, index) => {
+      //   // console.log(`${key}: ${values[key]}`);
+      //   params.append(key,values[index].toString())
+      // });
+
+      // const addURL = 'videos/add';
+
+      // const postConfig = {
+      //   headers: {
+      //     // 'Authorization': 'Basic YWRtaW46YWRtaW4=',
+      //     'Authorization': 'Basic c3RhcmNvaW46QClAIUBTdGFyY29pbk9yZw==',
+      //     'Content-Type': 'application/x-www-form-urlencoded',
+      //     'Accept': '*/*'
+      //   }
+      // };
+
+      // await client.post(addURL, params, postConfig);
+      // // await afterSubmit();
+      // handleClose();
+      // alert('Success');
+      // window.location.href = '/';
     } catch (e) {
       console.error(e);
     }
