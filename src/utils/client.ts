@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiUrl = process.env.REACT_APP_DATA_OCEAN_API_URL;
+const apiUrl = process.env.REACT_APP_DATA_OCEAN_RPC_URL;
 // const baseURL = `${ apiUrl }/v1`;
 const baseURL = apiUrl;
 
