@@ -27,6 +27,24 @@ export interface MsgPlayVideoResponse {
   exp: string;
 }
 
+export interface MsgPaySign {
+  creator: string;
+  videoId: Long;
+  receivedSizeMB: Long;
+  timestamp: Long;
+}
+
+export interface MsgPaySignResponse {
+}
+
+export interface MsgSubmitPaySign {
+  creator: string;
+  paySign: string;
+}
+
+export interface MsgSubmitPaySignResponse {
+}
+
 function createBaseMsgCreateVideo(): MsgCreateVideo {
   return { creator: "", title: "", description: "", coverLink: "", videoLink: "", priceMB: Long.UZERO };
 }
@@ -285,11 +303,231 @@ export const MsgPlayVideoResponse = {
   },
 };
 
+function createBaseMsgPaySign(): MsgPaySign {
+  return { creator: "", videoId: Long.UZERO, receivedSizeMB: Long.UZERO, timestamp: Long.UZERO };
+}
+
+export const MsgPaySign = {
+  encode(message: MsgPaySign, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (!message.videoId.isZero()) {
+      writer.uint32(16).uint64(message.videoId);
+    }
+    if (!message.receivedSizeMB.isZero()) {
+      writer.uint32(24).uint64(message.receivedSizeMB);
+    }
+    if (!message.timestamp.isZero()) {
+      writer.uint32(32).uint64(message.timestamp);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgPaySign {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgPaySign();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.videoId = reader.uint64() as Long;
+          break;
+        case 3:
+          message.receivedSizeMB = reader.uint64() as Long;
+          break;
+        case 4:
+          message.timestamp = reader.uint64() as Long;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgPaySign {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      videoId: isSet(object.videoId) ? Long.fromValue(object.videoId) : Long.UZERO,
+      receivedSizeMB: isSet(object.receivedSizeMB) ? Long.fromValue(object.receivedSizeMB) : Long.UZERO,
+      timestamp: isSet(object.timestamp) ? Long.fromValue(object.timestamp) : Long.UZERO,
+    };
+  },
+
+  toJSON(message: MsgPaySign): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.videoId !== undefined && (obj.videoId = (message.videoId || Long.UZERO).toString());
+    message.receivedSizeMB !== undefined && (obj.receivedSizeMB = (message.receivedSizeMB || Long.UZERO).toString());
+    message.timestamp !== undefined && (obj.timestamp = (message.timestamp || Long.UZERO).toString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgPaySign>, I>>(object: I): MsgPaySign {
+    const message = createBaseMsgPaySign();
+    message.creator = object.creator ?? "";
+    message.videoId = (object.videoId !== undefined && object.videoId !== null)
+      ? Long.fromValue(object.videoId)
+      : Long.UZERO;
+    message.receivedSizeMB = (object.receivedSizeMB !== undefined && object.receivedSizeMB !== null)
+      ? Long.fromValue(object.receivedSizeMB)
+      : Long.UZERO;
+    message.timestamp = (object.timestamp !== undefined && object.timestamp !== null)
+      ? Long.fromValue(object.timestamp)
+      : Long.UZERO;
+    return message;
+  },
+};
+
+function createBaseMsgPaySignResponse(): MsgPaySignResponse {
+  return {};
+}
+
+export const MsgPaySignResponse = {
+  encode(_: MsgPaySignResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgPaySignResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgPaySignResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgPaySignResponse {
+    return {};
+  },
+
+  toJSON(_: MsgPaySignResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgPaySignResponse>, I>>(_: I): MsgPaySignResponse {
+    const message = createBaseMsgPaySignResponse();
+    return message;
+  },
+};
+
+function createBaseMsgSubmitPaySign(): MsgSubmitPaySign {
+  return { creator: "", paySign: "" };
+}
+
+export const MsgSubmitPaySign = {
+  encode(message: MsgSubmitPaySign, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.paySign !== "") {
+      writer.uint32(18).string(message.paySign);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSubmitPaySign {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSubmitPaySign();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.paySign = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSubmitPaySign {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      paySign: isSet(object.paySign) ? String(object.paySign) : "",
+    };
+  },
+
+  toJSON(message: MsgSubmitPaySign): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.paySign !== undefined && (obj.paySign = message.paySign);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgSubmitPaySign>, I>>(object: I): MsgSubmitPaySign {
+    const message = createBaseMsgSubmitPaySign();
+    message.creator = object.creator ?? "";
+    message.paySign = object.paySign ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgSubmitPaySignResponse(): MsgSubmitPaySignResponse {
+  return {};
+}
+
+export const MsgSubmitPaySignResponse = {
+  encode(_: MsgSubmitPaySignResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSubmitPaySignResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSubmitPaySignResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgSubmitPaySignResponse {
+    return {};
+  },
+
+  toJSON(_: MsgSubmitPaySignResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgSubmitPaySignResponse>, I>>(_: I): MsgSubmitPaySignResponse {
+    const message = createBaseMsgSubmitPaySignResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   CreateVideo(request: MsgCreateVideo): Promise<MsgCreateVideoResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   PlayVideo(request: MsgPlayVideo): Promise<MsgPlayVideoResponse>;
+  PaySign(request: MsgPaySign): Promise<MsgPaySignResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  SubmitPaySign(request: MsgSubmitPaySign): Promise<MsgSubmitPaySignResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -300,6 +538,8 @@ export class MsgClientImpl implements Msg {
     this.rpc = rpc;
     this.CreateVideo = this.CreateVideo.bind(this);
     this.PlayVideo = this.PlayVideo.bind(this);
+    this.PaySign = this.PaySign.bind(this);
+    this.SubmitPaySign = this.SubmitPaySign.bind(this);
   }
   CreateVideo(request: MsgCreateVideo): Promise<MsgCreateVideoResponse> {
     const data = MsgCreateVideo.encode(request).finish();
@@ -311,6 +551,18 @@ export class MsgClientImpl implements Msg {
     const data = MsgPlayVideo.encode(request).finish();
     const promise = this.rpc.request(this.service, "PlayVideo", data);
     return promise.then((data) => MsgPlayVideoResponse.decode(new _m0.Reader(data)));
+  }
+
+  PaySign(request: MsgPaySign): Promise<MsgPaySignResponse> {
+    const data = MsgPaySign.encode(request).finish();
+    const promise = this.rpc.request(this.service, "PaySign", data);
+    return promise.then((data) => MsgPaySignResponse.decode(new _m0.Reader(data)));
+  }
+
+  SubmitPaySign(request: MsgSubmitPaySign): Promise<MsgSubmitPaySignResponse> {
+    const data = MsgSubmitPaySign.encode(request).finish();
+    const promise = this.rpc.request(this.service, "SubmitPaySign", data);
+    return promise.then((data) => MsgSubmitPaySignResponse.decode(new _m0.Reader(data)));
   }
 }
 
