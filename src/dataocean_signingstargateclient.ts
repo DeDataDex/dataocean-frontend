@@ -7,6 +7,7 @@ import {
     SigningStargateClientOptions,
     StdFee,
 } from "@cosmjs/stargate"
+import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import { Tendermint34Client } from "@cosmjs/tendermint-rpc"
 import Long from "long"
 import { DataOceanExtension, setupDataOceanExtension } from "./modules/dataocean/queries"
@@ -73,5 +74,29 @@ export class DataOceanSigningStargateClient extends SigningStargateClient {
             },
         }
         return this.signAndBroadcast(creator, [createMsg], fee, memo)
+    }
+
+    public async signCreateVideo(
+        creator: string,
+        title: string,
+        description: string,
+        coverLink: string,
+        videoLink: string,
+        priceMB: Long,
+        fee: StdFee,
+        memo = "",
+    ): Promise<TxRaw> {
+        const createMsg: MsgCreateVideoEncodeObject = {
+            typeUrl: typeUrlMsgCreateVideo,
+            value: {
+                creator: creator,
+                title: title,
+                description: description,
+                coverLink: coverLink,
+                videoLink: videoLink,
+                priceMB: priceMB,
+            },
+        }
+        return this.sign(creator, [createMsg], fee, memo)
     }
 }

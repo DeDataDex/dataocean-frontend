@@ -20,6 +20,9 @@ import { chainId, getChainInfo } from '../../../../config/chain'
 import { DataOceanSigningStargateClient } from "../../../../dataocean_signingstargateclient"
 import { GasPrice } from "@cosmjs/stargate"
 import { DeliverTxResponse } from "@cosmjs/stargate"
+import { coins } from "@cosmjs/amino"
+import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
+import { toHex,fromHex } from "@cosmjs/encoding"
 import Long from "long"
 
 const useStyles = (theme: Theme) =>
@@ -208,14 +211,33 @@ const UploadVideo = ({
             gasPrice: GasPrice.fromString("1stake"),
         },
       )
+
+      const fee = {
+        amount: coins(0, 'stake'),
+        gas: '100000'
+      }
+      // const signed: TxRaw = await client.signCreateVideo(
+      //   creator,
+      //   inputs.title,
+      //   inputs.description,
+      //   inputs.picUrl,
+      //   inputs.videoUrl,
+      //   Long.fromNumber(parseInt(inputs.price)),
+      //   fee 
+      //   )
+      // console.log({signed})
+      // console.log(TxRaw.encode(signed).finish())
+      // console.log(toHex(TxRaw.encode(signed).finish()))
+      // console.log(fromHex(toHex(TxRaw.encode(signed).finish())))
       const result: DeliverTxResponse = await client.createVideo(
-        creator,
-        inputs.title,
-        inputs.description,
-        inputs.picUrl,
-        inputs.videoUrl,
-        Long.fromNumber(parseInt(inputs.price)),
-          "auto" )
+          creator,
+          inputs.title,
+          inputs.description,
+          inputs.picUrl,
+          inputs.videoUrl,
+          Long.fromNumber(parseInt(inputs.price)),
+          fee
+        )
       console.log({result})
       
       const {code, transactionHash} = result
