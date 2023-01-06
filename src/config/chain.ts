@@ -1,12 +1,12 @@
 import { ChainInfo } from "@keplr-wallet/types"
 
-export const chainId = "dataocean"
+export const chainId = process.env.REACT_APP_DATA_OCEAN_CHAIN_ID || ''
 
 export const getChainInfo = (): ChainInfo => ({
 	chainId: chainId,
 	chainName: chainId,
-	rpc: "http://localhost:26657",
-	rest: "http://localhost:1317",
+	rpc: process.env.REACT_APP_DATA_OCEAN_RPC_URL || '',
+	rest: process.env.REACT_APP_DATA_OCEAN_REST_URL || '',
 	bip44: {
 		coinType: 118,
 	},

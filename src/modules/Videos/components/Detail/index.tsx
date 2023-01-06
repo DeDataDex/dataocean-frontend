@@ -239,12 +239,14 @@ class Detail extends PureComponent<IndexProps, IndexState> {
 
   init = async () => {
     const { match, videoList, video, getVideo } = this.props;
-    const id = match.params.id;
+    const id = parseInt(match.params.id);
     
-    // const detail = await client.get(`videos/detail/${id}`);
-    console.log({video,videoList,id})
-    let detail = video || (videoList && videoList.length && videoList.filter((item:any) => item.id === parseInt(id))[0]);
-
+    let detail
+    if (video && parseInt(video.id) === id) {
+      detail = video
+    }else if (videoList && videoList.length) {
+      detail = videoList.filter((item:any) => item.id === id)[0];
+    }
     if (!detail){
       getVideo({id})
     }
@@ -253,15 +255,21 @@ class Detail extends PureComponent<IndexProps, IndexState> {
 
   render() {
     const { match, videoList, video  } = this.props;
-    const id = match.params.id;
-    const detail = video || (videoList && videoList.length && videoList.filter((item:any) => item.id === parseInt(id))[0]);
+    const id = parseInt(match.params.id);
+    let detail
+    if (video && parseInt(video.id) === id) {
+      detail = video
+    }else if (videoList && videoList.length) {
+      detail = videoList.filter((item:any) => item.id === id)[0];
+    }
+
     const {accounts} = this.props;
     
     const accountAddress = (accounts && accounts.length) ? accounts[0].address : ''
     return (
       <CenteredView>
         {accountAddress ? (
-          <VideoPlayer src={detail.videoLink} accountAddress={accountAddress}/>
+          <VideoPlayer src={detail?.videoLink || ''} accountAddress={accountAddress}/>
         ) : (
           'Please connect wallet to play video'
         )

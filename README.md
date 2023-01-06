@@ -1,9 +1,10 @@
 ## Set Environment Variables
 
 ```
-export REACT_APP_DATA_OCEAN_RPC_URL=http://127.0.0.1:1317
-export REACT_APP_DATA_OCEAN_ADMIN_ADDRESS=0x...,0x...
-
+export REACT_APP_DATA_OCEAN_CHAIN_ID="dataocean"
+export REACT_APP_DATA_OCEAN_RPC_URL=http://127.0.0.1:26657
+export REACT_APP_DATA_OCEAN_REST_URL=http://127.0.0.1:1317
+export REACT_APP_DATA_OCEAN_ADMIN_ADDRESS=cosmos...,cosmos...
 ```
 
 `REACT_APP_DATA_OCEAN_ADMIN_ADDRESS` is the address that can uplaod videos.
