@@ -4,38 +4,52 @@ import {
     MsgCreateVideoResponse,
     MsgPlayVideo,
     MsgPlayVideoResponse,
+    MsgSubmitPaySign,
+    MsgPaySign,
 } from "../generated/dataocean/dataocean/tx"
 
 export const typeUrlMsgCreateVideo = "/dataocean.dataocean.MsgCreateVideo"
-export const typeUrlMsgCreateVideoResponse = "/dataocean.dataocean.MsgCreateVideoResponse"
 export const typeUrlMsgPlayVideo = "/dataocean.dataocean.MsgPlayVideo"
-export const typeUrlMsgPlayVideoResponse = "/dataocean.dataocean.MsgPlayVideoResponse"
+export const typeUrlMsgSubmitPaySign = "/dataocean.dataocean.MsgSubmitPaySign"
+export const typeUrlMsgPaySign = "/dataocean.dataocean.MsgPaySign"
 
 export const dataoceanTypes: ReadonlyArray<[string, GeneratedType]> = [
     [typeUrlMsgCreateVideo, MsgCreateVideo],
     [typeUrlMsgPlayVideo, MsgPlayVideo],
+    [typeUrlMsgSubmitPaySign, MsgSubmitPaySign],
+    [typeUrlMsgPaySign, MsgPaySign],
 ]
+
+
+export interface MsgSubmitPaySignEncodeObject extends EncodeObject {
+    readonly typeUrl: "/dataocean.dataocean.MsgSubmitPaySign"
+    readonly value: Partial<MsgSubmitPaySign>
+}
+
+export function isMsgSubmitPaySignEncodeObject(
+    encodeObject: EncodeObject,
+): encodeObject is MsgSubmitPaySignEncodeObject {
+    return (encodeObject as MsgSubmitPaySignEncodeObject).typeUrl === typeUrlMsgSubmitPaySign
+}
+export interface MsgPaySignEncodeObject extends EncodeObject {
+    readonly typeUrl: "/dataocean.dataocean.MsgPaySign"
+    readonly value: Partial<MsgPaySign>
+}
+
+export function isMsgPaySignEncodeObject(
+    encodeObject: EncodeObject,
+): encodeObject is MsgPaySignEncodeObject {
+    return (encodeObject as MsgPaySignEncodeObject).typeUrl === typeUrlMsgPaySign
+}
 
 export interface MsgCreateVideoEncodeObject extends EncodeObject {
     readonly typeUrl: "/dataocean.dataocean.MsgCreateVideo"
     readonly value: Partial<MsgCreateVideo>
 }
 
-export function isMsgCreateVideoEncodeObject(
-    encodeObject: EncodeObject,
-): encodeObject is MsgCreateVideoEncodeObject {
-    return (encodeObject as MsgCreateVideoEncodeObject).typeUrl === typeUrlMsgCreateVideo
-}
-
 export interface MsgCreateVideoResponseEncodeObject extends EncodeObject {
     readonly typeUrl: "/dataocean.dataocean.MsgCreateVideoResponse"
     readonly value: Partial<MsgCreateVideoResponse>
-}
-
-export function isMsgCreateVideoResponseEncodeObject(
-    encodeObject: EncodeObject,
-): encodeObject is MsgCreateVideoResponseEncodeObject {
-    return (encodeObject as MsgCreateVideoResponseEncodeObject).typeUrl === typeUrlMsgCreateVideoResponse
 }
 
 export interface MsgPlayVideoEncodeObject extends EncodeObject {
@@ -54,8 +68,3 @@ export interface MsgPlayVideoResponseEncodeObject extends EncodeObject {
     readonly value: Partial<MsgPlayVideoResponse>
 }
 
-export function isMsgPlayVideoResponseEncodeObject(
-    encodeObject: EncodeObject,
-): encodeObject is MsgPlayVideoResponseEncodeObject {
-    return (encodeObject as MsgPlayVideoResponseEncodeObject).typeUrl === typeUrlMsgPlayVideoResponse
-}
