@@ -229,6 +229,25 @@ const UploadVideo = ({
       // console.log(TxRaw.encode(signed).finish())
       // console.log(toHex(TxRaw.encode(signed).finish()))
       // console.log(fromHex(toHex(TxRaw.encode(signed).finish())))
+
+      // const grantee = "cosmos1hzt8tfsl55g2aks6p5e0h5ldjc2axlyamdct6z"
+      // const result: DeliverTxResponse = await client.authzGrantSend(
+      //   creator,
+      //   grantee,
+      //   fee
+      // )
+      // console.log({result})
+      
+      // const {code, transactionHash} = result
+      // console.log({code, transactionHash})
+      // if (code === 0) {
+      //   history.push('/videos/1');
+      // }
+
+      // const txResult = await client.getTx(transactionHash)
+      // console.log({txResult})
+
+
       const result: DeliverTxResponse = await client.createVideo(
           creator,
           inputs.title,
