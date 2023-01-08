@@ -4,7 +4,17 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import MOCK_VIDEO_LIST from '../../../../../mocks/videoList.json'
+import { chainId, getChainInfo } from '../../../../../config/chain'
+import { OfflineSigner } from "@cosmjs/proto-signing"
+import { DataOceanSigningStargateClient } from "../../../../../dataocean_signingstargateclient"
+import { GasPrice } from "@cosmjs/stargate"
+import { DeliverTxResponse } from "@cosmjs/stargate"
+import { coins } from "@cosmjs/amino"
+import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
+import { toHex,fromHex } from "@cosmjs/encoding"
+import Long from "long"
 
 const useStyles = (theme: Theme) =>
   createStyles({
@@ -98,6 +108,9 @@ const useStyles = (theme: Theme) =>
     info: {
       marginTop: '10px',
     },
+    play: {
+      marginBottom: '10px',
+    },
   });
 
 interface ExternalProps {
@@ -111,6 +124,7 @@ interface ExternalProps {
   price: string;
   duration: number;
   size: number;
+  accountAddress:string;
 }
 
 interface InternalProps {
@@ -139,6 +153,7 @@ class VideoInfo extends PureComponent<Props, PollCardState> {
     price: undefined,
     duration: undefined,
     size: undefined,
+    accountAddress: undefined,
   };
 
   constructor(props: Props) {
@@ -160,6 +175,75 @@ class VideoInfo extends PureComponent<Props, PollCardState> {
     //   });
     // }
   }
+
+  handlePlay = async() => {
+    try {
+      const {accountAddress, id} = this.props
+      const { keplr } = window
+      if (!keplr) {
+          alert("You need to install Keplr")
+          throw new Error("You need to install Keplr")
+      }
+      const chain = getChainInfo()
+      await keplr.experimentalSuggestChain(chain)
+      const offlineSigner: OfflineSigner = keplr.getOfflineSigner!(chainId)
+      const creator = (await offlineSigner.getAccounts())[0].address
+      
+      const client: DataOceanSigningStargateClient = await DataOceanSigningStargateClient.connectWithSigner(
+        chain.rpc,
+        offlineSigner,
+        {
+            gasPrice: GasPrice.fromString("1stake"),
+        },
+      )
+
+      const fee = {
+        amount: coins(0, 'stake'),
+        gas: '100000'
+      }
+      // const signed: TxRaw = await client.signCreateVideo(
+      //   creator,
+      //   inputs.title,
+      //   inputs.description,
+      //   inputs.picUrl,
+      //   inputs.videoUrl,
+      //   Long.fromNumber(parseInt(inputs.price)),
+      //   fee 
+      //   )
+      // console.log({signed})
+      // console.log(TxRaw.encode(signed).finish())
+      // console.log(toHex(TxRaw.encode(signed).finish()))
+      // console.log(fromHex(toHex(TxRaw.encode(signed).finish())))
+
+      const grantee = "cosmos1hzt8tfsl55g2aks6p5e0h5ldjc2axlyamdct6z"
+      const result: DeliverTxResponse = await client.authzGrantSend(
+        creator,
+        grantee,
+        fee
+      )
+      console.log({result})
+      
+      const {code, transactionHash} = result
+      console.log({code, transactionHash})
+      if (code === 0) {
+        const result2: DeliverTxResponse = await client.playVideo(
+          creator,
+          Long.fromNumber(id),
+          fee
+        )
+        const {code: code2, transactionHash: transactionHash2, rawLog} = result2
+        if (code2 === 0) {
+          if (rawLog) {
+            const rawLogObj = JSON.parse(rawLog)
+            const eventPlayVideo = rawLogObj[0].events.filter((e: any) => e.type === 'play_video')
+            const url = eventPlayVideo ? eventPlayVideo[0].attributes[0].value : ''
+          }
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   onCardEnter = () => {
     this.setState({ displayHover: true });
@@ -201,12 +285,15 @@ class VideoInfo extends PureComponent<Props, PollCardState> {
                 <Typography variant="body2" gutterBottom>
                   {t('video.price')}: {price}
                 </Typography>
-                <Typography variant="body2" gutterBottom>
+                {/* <Typography variant="body2" gutterBottom>
                   {t('video.duration')}: {_duration}
                 </Typography>
                 <Typography variant="body2" gutterBottom>
                   {t('video.size')}: {_size}
-                </Typography>
+                </Typography> */}
+                <Button variant="contained" color="primary" onClick={this.handlePlay} className={classes.play}>
+                  {t('video.play')}
+                </Button>
               </Grid>
             </Grid>
           </Grid>

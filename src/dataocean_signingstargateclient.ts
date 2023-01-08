@@ -17,6 +17,8 @@ import {
     dataoceanTypes,
     MsgCreateVideoEncodeObject,
     typeUrlMsgCreateVideo,
+    MsgPlayVideoEncodeObject,
+    typeUrlMsgPlayVideo,
 } from "./types/dataocean/messages"
 import { EncodeObject } from "@cosmjs/proto-signing"
 
@@ -65,7 +67,7 @@ export class DataOceanSigningStargateClient extends SigningStargateClient {
         fee: StdFee | "auto" | number,
         memo = "",
     ): Promise<DeliverTxResponse> {
-        const createMsg: MsgCreateVideoEncodeObject = {
+        const msg: MsgCreateVideoEncodeObject = {
             typeUrl: typeUrlMsgCreateVideo,
             value: {
                 creator: creator,
@@ -76,7 +78,23 @@ export class DataOceanSigningStargateClient extends SigningStargateClient {
                 priceMB: priceMB,
             },
         }
-        return this.signAndBroadcast(creator, [createMsg], fee, memo)
+        return this.signAndBroadcast(creator, [msg], fee, memo)
+    }
+
+    public async playVideo(
+        creator: string,
+        videoId: Long,
+        fee: StdFee | "auto" | number,
+        memo = "",
+    ): Promise<DeliverTxResponse> {
+        const msg: MsgPlayVideoEncodeObject = {
+            typeUrl: typeUrlMsgPlayVideo,
+            value: {
+                creator: creator,
+                videoId: videoId,
+            },
+        }
+        return this.signAndBroadcast(creator, [msg], fee, memo)
     }
 
     public async signCreateVideo(
@@ -89,7 +107,7 @@ export class DataOceanSigningStargateClient extends SigningStargateClient {
         fee: StdFee,
         memo = "",
     ): Promise<TxRaw> {
-        const createMsg: MsgCreateVideoEncodeObject = {
+        const msg: MsgCreateVideoEncodeObject = {
             typeUrl: typeUrlMsgCreateVideo,
             value: {
                 creator: creator,
@@ -100,7 +118,7 @@ export class DataOceanSigningStargateClient extends SigningStargateClient {
                 priceMB: priceMB,
             },
         }
-        return this.sign(creator, [createMsg], fee, memo)
+        return this.sign(creator, [msg], fee, memo)
     }
 
 
@@ -114,11 +132,9 @@ export class DataOceanSigningStargateClient extends SigningStargateClient {
             grantee: grantee,
             grant: {
                 authorization: {
-                    // "@type": "/cosmos.authz.v1beta1.GenericAuthorization",
-                    // "msg": "/cosmos.bank.v1beta1.MsgSend"
                     typeUrl: "/cosmos.bank.v1beta1.SendAuthorization",
                     value: SendAuthorizationProto.encode(
-                        { spendLimit: [{ denom: "token", amount: "10" }] }
+                        { spendLimit: [{ denom: "token", amount: "1000" }] }
                     ).finish(),
                 },
                 expiration: {
@@ -126,17 +142,6 @@ export class DataOceanSigningStargateClient extends SigningStargateClient {
                     nanos: 0,
                 }
             },
-
-            // grant = {
-            //     authorization: {
-            //         type_url: "/cosmos.bank.v1beta1.SendAuthorization",
-            //         value: SendAuthorizationProto.encode(
-            //             this.params.authorization,
-            //         ).finish(),
-            //     },
-            //     expiration,
-            // };
-
         });
         const msgAny: EncodeObject = {
             typeUrl: "/cosmos.authz.v1beta1.MsgGrant",
@@ -144,38 +149,5 @@ export class DataOceanSigningStargateClient extends SigningStargateClient {
         };
 
         return this.signAndBroadcast(granter, [msgAny], fee);
-
-        // let grantee = "hid1k77resf8gktl5wh8fhwlqt7pccandeyj9z5702"  // account with no money
-        // let customTypeUrl = "/hypersignprotocol.hidnode.ssi.MsgCreateDID"
-
-        // // The Custom Module Message that the grantee needs to execute
-        // const txCreateDIDMessage = {
-        //     typeUrl: customTypeUrl,
-        //     value: MsgCreateDID.encode(
-        //         MsgCreateDID.fromPartial({
-        //             didDocString: "---",
-        //             signatures: "---",
-        //             creator: "---",
-        //         })).finish(),
-        // };
-
-        // MsgExec Tx Object
-        // const txAuthMessage = {
-        //     typeUrl: "/cosmos.authz.v1beta1.MsgGrant",
-        //     value: {
-        //         "granter": granter,
-        //         "grantee": grantee,
-        //         "grant": {
-        //             "authorization": {
-        //                 "@type": "/cosmos.authz.v1beta1.GenericAuthorization",
-        //                 "msg": "/cosmos.bank.v1beta1.MsgSend"
-        //             },
-        //             "expiration": "2023-01-07T09:38:11Z"
-        //         }
-        //     },
-        // };
-
-        // return this.signAndBroadcast(grantee, [txAuthMessage], fee);
-
     }
 }

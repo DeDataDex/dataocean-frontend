@@ -13,6 +13,7 @@
     "searchNotFoundDetail": "请返回重试或者回到<a href=\"/\">首页</a>."
   },
   "video": {
+    "play": "播放",
     "price": "价格",
     "duration": "时长",
     "size": "大小",

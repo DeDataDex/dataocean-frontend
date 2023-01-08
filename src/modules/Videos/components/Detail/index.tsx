@@ -268,12 +268,14 @@ class Detail extends PureComponent<IndexProps, IndexState> {
     const accountAddress = (accounts && accounts.length) ? accounts[0].address : ''
     return (
       <CenteredView>
-        {accountAddress ? (
-          <VideoPlayer src={detail?.videoLink || ''} accountAddress={accountAddress}/>
-        ) : (
-          'Please connect wallet to play video'
-        )
+        {
+          accountAddress ? (
+            <VideoPlayer src={detail?.videoLink || ''} accountAddress={accountAddress}/>
+          ) : (
+            'Please connect wallet to play video'
+          )
         } 
+
         {
           detail ? (
             <VideoInfo
@@ -286,12 +288,12 @@ class Detail extends PureComponent<IndexProps, IndexState> {
               price={detail.priceMB }
               duration={detail.duration || 360000}
               size={detail.size || 536870912000}
+              accountAddress={accountAddress}
             />
           ) : (
             <LoadingOutlined />
           )
         }
-        
       </CenteredView>
     );
   }
