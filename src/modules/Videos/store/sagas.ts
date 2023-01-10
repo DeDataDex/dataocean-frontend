@@ -4,6 +4,21 @@ import * as api from './apis';
 import * as actions from './actions';
 import * as types from './constants';
 
+export function* getGrantee(action: ReturnType<typeof actions.getVideo>) {
+  try {
+    const res = yield call(withLoading, api.getGrantee, action.type, action.payload);
+    yield put(actions.setGrantee(res.account.base_account.address));
+  } catch (err) {
+    if (err.message) {
+      console.log(err.message);
+    }
+  }
+}
+
+function* watchGetGrantee() {
+  yield takeLatest(types.GET_GRANTEE, getGrantee)
+}
+
 export function* getVideo(action: ReturnType<typeof actions.getVideo>) {
   try {
     const res = yield call(withLoading, api.getVideo, action.type, action.payload);
@@ -67,6 +82,7 @@ function* watchGetVideoServerNotify() {
 }
 
 const sagas = [
+  watchGetGrantee,
   watchGetVideo,
   watchGetWalletAccounts,
   watchGetAccountBalance,

@@ -171,7 +171,6 @@ function Index(props: any) {
       setConnectStatus(1);
 
       // clean [accounts, pollvotes]store
-      dispatch(store.actions.setPollVotes(null));
     }
 
     dispatch(store.actions.setWalletAccounts(newAccounts));

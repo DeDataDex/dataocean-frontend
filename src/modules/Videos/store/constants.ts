@@ -3,10 +3,10 @@ export const SCOPENAME = 'module:videos';
 // info
 export const GET_VIDEO = `${ SCOPENAME }/GET_VIDEO`;
 export const SET_VIDEO = `${ SCOPENAME }/SET_VIDEO`;
-export const GET_POLL_BY_HEIGHT = `${ SCOPENAME }/GET_POLL_BY_HEIGHT`;
 
-export const GET_POLL_VOTES = `${ SCOPENAME }/GET_POLL_VOTES`;
-export const SET_POLL_VOTES = `${ SCOPENAME }/SET_POLL_VOTES`;
+// grantee
+export const GET_GRANTEE = `${ SCOPENAME }/GET_GRANTEE`;
+export const SET_GRANTEE = `${ SCOPENAME }/SET_GRANTEE`;
 
 export const GET_WALLECT_ACCOUNTS = `${ SCOPENAME }/GET_WALLECT_ACCOUNTS`;
 export const SET_WALLECT_ACCOUNTS = `${ SCOPENAME }/SET_WALLECT_ACCOUNTS`;
@@ -15,12 +15,6 @@ export const SET_WALLECT_ACCOUNTS = `${ SCOPENAME }/SET_WALLECT_ACCOUNTS`;
 // list
 export const GET_VIDEO_LIST = `${ SCOPENAME }/GET_VIDEO_LIST`;
 export const SET_VIDEO_LIST = `${ SCOPENAME }/SET_VIDEO_LIST`;
-
-export const GET_POLL_LIST_REQUEST = `${ SCOPENAME }/GET_POLL_LIST_REQUEST`;
-export const GET_POLL_LIST_SUCCESS = `${ SCOPENAME }/GET_POLL_LIST_SUCCESS`;
-export const GET_POLL_LIST_FAILURE = `${ SCOPENAME }/GET_POLL_LIST_FAILURE`;
-
-
 
 // account balnace
 export const GET_ACCOUNT_BALANCE = `${ SCOPENAME }/GET_ACCOUNT_BALANCE`;

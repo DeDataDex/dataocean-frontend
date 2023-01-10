@@ -16,10 +16,12 @@ const selector = createSelector(
     accounts: current.accounts,
     videoList: current.videoList,
     video: current.video,
+    grantee: current.grantee,
     loading
   })
 );
 
 export default connect(selector, {
   getVideo: actions.getVideo,
+  getGrantee: actions.getGrantee,
 })(Index) as any;

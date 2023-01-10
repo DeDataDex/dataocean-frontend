@@ -183,10 +183,12 @@ interface IndexProps {
   classes: any;
   t: any;
   match: any;
+  grantee: any;
   video: any;
   videoList: any;
   accounts: any[];
   getVideo: (data: any, callback?: any) => any;
+  getGrantee: (data: any, callback?: any) => any;
   history: any;
 }
 
@@ -209,6 +211,7 @@ class Detail extends PureComponent<IndexProps, IndexState> {
   // eslint-disable-next-line react/static-property-placement
   static defaultProps = {
     match: {},
+    grantee: undefined,
     video: undefined,
     videoList: undefined,
     accounts: [],
@@ -240,7 +243,7 @@ class Detail extends PureComponent<IndexProps, IndexState> {
   };
 
   init = async () => {
-    const { match, videoList, video, getVideo } = this.props;
+    const { match, videoList, video, getVideo, grantee, getGrantee } = this.props;
     const id = parseInt(match.params.id);
     
     let detail
@@ -252,6 +255,9 @@ class Detail extends PureComponent<IndexProps, IndexState> {
     if (!detail){
       getVideo({id})
     }
+    if (!grantee){
+      getGrantee({chainId: 'dataocean'})
+    }
   };
 
   updateVideoInfo = (videoPlayUrl: string, paySign: string )  =>{
@@ -259,7 +265,7 @@ class Detail extends PureComponent<IndexProps, IndexState> {
   }
 
   render() {
-    const { match, videoList, video  } = this.props;
+    const { match, videoList, video, grantee } = this.props;
     const { videoPlayUrl, paySign } = this.state;
     const id = parseInt(match.params.id);
     let detail
@@ -272,7 +278,7 @@ class Detail extends PureComponent<IndexProps, IndexState> {
     const {accounts} = this.props;
     
     const accountAddress = (accounts && accounts.length) ? accounts[0].address : ''
-    console.log({videoPlayUrl, paySign})
+    console.log({videoPlayUrl, paySign, grantee})
 
     const vieoPlayer = videoPlayUrl ? (
       <VideoPlayer src={videoPlayUrl} paySign={paySign} accountAddress={accountAddress} />
@@ -287,7 +293,7 @@ class Detail extends PureComponent<IndexProps, IndexState> {
           )
         }
         {
-          detail ? (
+          (detail && grantee) ? (
             <VideoInfo
               key={detail.id}
               id={detail.id}
@@ -299,6 +305,7 @@ class Detail extends PureComponent<IndexProps, IndexState> {
               duration={detail.duration || 360000}
               size={detail.size || 536870912000}
               accountAddress={accountAddress}
+              grantee={grantee}
               updateVideoInfo={this.updateVideoInfo}
             />
           ) : (

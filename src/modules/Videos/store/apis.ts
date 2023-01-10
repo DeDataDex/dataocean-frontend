@@ -10,8 +10,8 @@ const chain = getChainInfo();
 
 let signingStargateClient: any = null;
 
+export const getGrantee = (params: any) => client.get(`/cosmos/auth/v1beta1/module_accounts/${ params.chainId }`);
 export const getVideo = (params: any) => client.get(`/dataocean/dataocean/video/${ params.id }`);
-export const getPollByHeight = (params: any) => client.get(`block/${ network }/height/${ params.height }`);
 
 export const getWalletAccounts = async () => {
     if (!window.keplr) {
@@ -46,6 +46,5 @@ export const getAccountBalance = async (address: any) => {
 }
 
 export const getVideoServerNotify = (params: any) => {
-
     client.get('http://127.0.0.1/videoPlay', params);
 }

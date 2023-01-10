@@ -133,6 +133,7 @@ interface ExternalProps {
   duration: number;
   size: number;
   accountAddress:string;
+  grantee:string;
   updateVideoInfo: (videoPlayUrl: string, paySign: string) => void;
 }
 
@@ -163,6 +164,7 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
     duration: undefined,
     size: undefined,
     accountAddress: undefined,
+    grantee: undefined,
     updateVideoInfo: () => {},
   };
 
@@ -180,7 +182,7 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
   handlePlay = async() => {
     try {
       this.setState({ loading: true });
-      const {accountAddress, id, videoUrl, updateVideoInfo} = this.props
+      const { id, grantee, videoUrl, updateVideoInfo} = this.props
       const { keplr } = window
       if (!keplr) {
           alert("You need to install Keplr")
@@ -205,7 +207,6 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
         },
       )
 
-      const grantee = "cosmos1hzt8tfsl55g2aks6p5e0h5ldjc2axlyamdct6z"
       const result: DeliverTxResponse = await client.authzGrantSend(
         creator,
         grantee,
