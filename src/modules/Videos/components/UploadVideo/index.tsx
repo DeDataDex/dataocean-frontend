@@ -294,7 +294,7 @@ const UploadVideo = ({
       }
     };
     init();
-  }, [open, id, defaultCreator, accounts]);
+  }, [open, id, defaultCreator, accounts, history]);
 
   moment.locale(t('video.locale'));
 

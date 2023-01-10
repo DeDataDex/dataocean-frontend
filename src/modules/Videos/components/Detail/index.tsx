@@ -270,7 +270,7 @@ class Detail extends PureComponent<IndexProps, IndexState> {
       <CenteredView>
         {
           accountAddress ? (
-            <VideoPlayer src={detail?.videoLink || ''} accountAddress={accountAddress}/>
+            <VideoPlayer src={detail?.videoLink || ''} accountAddress={accountAddress} />
           ) : (
             'Please connect wallet to play video'
           )

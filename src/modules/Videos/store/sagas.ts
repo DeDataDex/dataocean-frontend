@@ -7,7 +7,6 @@ import * as types from './constants';
 export function* getVideo(action: ReturnType<typeof actions.getVideo>) {
   try {
     const res = yield call(withLoading, api.getVideo, action.type, action.payload);
-    console.log('saga getVideo', res)
     yield put(actions.setVideo(res.Video));
   } catch (err) {
     if (err.message) {

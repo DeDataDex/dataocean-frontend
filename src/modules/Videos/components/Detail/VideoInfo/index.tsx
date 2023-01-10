@@ -10,11 +10,19 @@ import { chainId, getChainInfo } from '../../../../../config/chain'
 import { OfflineSigner } from "@cosmjs/proto-signing"
 import { DataOceanSigningStargateClient } from "../../../../../dataocean_signingstargateclient"
 import { GasPrice } from "@cosmjs/stargate"
-import { DeliverTxResponse } from "@cosmjs/stargate"
+import { DeliverTxResponse,defaultRegistryTypes } from "@cosmjs/stargate"
 import { coins } from "@cosmjs/amino"
 import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
-import { toHex,fromHex } from "@cosmjs/encoding"
+import { toHex } from "@cosmjs/encoding"
 import Long from "long"
+import { dataoceanTypes } from "../../../../../types/dataocean/messages"
+import { GeneratedType } from "@cosmjs/proto-signing"
+import JSEncrypt from 'jsencrypt'
+
+export const dataoceanDefaultRegistryTypes: ReadonlyArray<[string, GeneratedType]> = [
+  ...defaultRegistryTypes,
+  ...dataoceanTypes,
+]
 
 const useStyles = (theme: Theme) =>
   createStyles({
@@ -167,13 +175,6 @@ class VideoInfo extends PureComponent<Props, PollCardState> {
   componentDidMount() {
     const data =  MOCK_VIDEO_LIST.data.list[0]
     this.setState({ pollData: data });
-    // if (status < POLL_STATUS.EXECUTED) {
-    //   getPollData(creator, type_args_1).then((data) => {
-    //     if (data && data.id === id) {
-    //       this.setState({ pollData: data });
-    //     }
-    //   });
-    // }
   }
 
   handlePlay = async() => {
@@ -187,8 +188,14 @@ class VideoInfo extends PureComponent<Props, PollCardState> {
       const chain = getChainInfo()
       await keplr.experimentalSuggestChain(chain)
       const offlineSigner: OfflineSigner = keplr.getOfflineSigner!(chainId)
+
+      const fee = {
+        amount: coins(0, 'stake'),
+        gas: '100000'
+      }
+
       const creator = (await offlineSigner.getAccounts())[0].address
-      
+
       const client: DataOceanSigningStargateClient = await DataOceanSigningStargateClient.connectWithSigner(
         chain.rpc,
         offlineSigner,
@@ -196,24 +203,9 @@ class VideoInfo extends PureComponent<Props, PollCardState> {
             gasPrice: GasPrice.fromString("1stake"),
         },
       )
+     
+     
 
-      const fee = {
-        amount: coins(0, 'stake'),
-        gas: '100000'
-      }
-      // const signed: TxRaw = await client.signCreateVideo(
-      //   creator,
-      //   inputs.title,
-      //   inputs.description,
-      //   inputs.picUrl,
-      //   inputs.videoUrl,
-      //   Long.fromNumber(parseInt(inputs.price)),
-      //   fee 
-      //   )
-      // console.log({signed})
-      // console.log(TxRaw.encode(signed).finish())
-      // console.log(toHex(TxRaw.encode(signed).finish()))
-      // console.log(fromHex(toHex(TxRaw.encode(signed).finish())))
 
       const grantee = "cosmos1hzt8tfsl55g2aks6p5e0h5ldjc2axlyamdct6z"
       const result: DeliverTxResponse = await client.authzGrantSend(
@@ -221,24 +213,48 @@ class VideoInfo extends PureComponent<Props, PollCardState> {
         grantee,
         fee
       )
-      console.log({result})
-      
-      const {code, transactionHash} = result
-      console.log({code, transactionHash})
+
+      const {code} = result
+      console.log({code})
       if (code === 0) {
         const result2: DeliverTxResponse = await client.playVideo(
           creator,
           Long.fromNumber(id),
           fee
         )
-        const {code: code2, transactionHash: transactionHash2, rawLog} = result2
+        const {code: code2, rawLog} = result2
         if (code2 === 0) {
           if (rawLog) {
             const rawLogObj = JSON.parse(rawLog)
             const eventPlayVideo = rawLogObj[0].events.filter((e: any) => e.type === 'play_video')
             const url = eventPlayVideo ? eventPlayVideo[0].attributes[0].value : ''
+            const payPublicKey = eventPlayVideo ? eventPlayVideo[0].attributes[2].value.replaceAll('\n','') : ''
+            console.log({url, creator, id, payPublicKey})
+           
+            const signed: TxRaw = await client.paySign(
+              creator,
+              Long.fromNumber(id),
+              payPublicKey,
+              fee
+            )
+            const signedBytes= TxRaw.encode(signed).finish()
+            // dataoceand tx decode [paySign] --hex
+            const paySign= toHex(signedBytes)
+            console.log({paySign})
+
+            const data =  {
+              videoId: id,
+              receivedSizeMB: 987654321,
+              timestamp: Math.ceil(new Date().getTime() / 1000),
+            }
+            
+
+            const encryptor = new JSEncrypt()  
+            encryptor.setPublicKey(payPublicKey)
+            const payData = encryptor.encrypt(JSON.stringify(data))
+            console.log({payData})
           }
-        }
+       }
       }
     } catch (e) {
       console.error(e);
@@ -265,8 +281,8 @@ class VideoInfo extends PureComponent<Props, PollCardState> {
     
     const imgAlt = `【${name}】${desc}`
     const imgUrl = `/videoPics/${picUrl}`
-    const _duration = '120 分钟'
-    const _size = '500 M'
+    // const _duration = '120 分钟'
+    // const _size = '500 M'
     return (
       <Paper className={classes.root}>
         <Grid container spacing={2}>

@@ -19,8 +19,11 @@ import {
     typeUrlMsgCreateVideo,
     MsgPlayVideoEncodeObject,
     typeUrlMsgPlayVideo,
+    MsgPaySignEncodeObject,
+    typeUrlMsgPaySign,
 } from "./types/dataocean/messages"
 import { EncodeObject } from "@cosmjs/proto-signing"
+
 
 export const dataoceanDefaultRegistryTypes: ReadonlyArray<[string, GeneratedType]> = [
     ...defaultRegistryTypes,
@@ -45,6 +48,16 @@ export class DataOceanSigningStargateClient extends SigningStargateClient {
             ...options,
         })
     }
+
+    // public static async offline(
+    //     signer: OfflineSigner,
+    //     options: SigningStargateClientOptions = {},
+    // ): Promise<DataOceanSigningStargateClient> {
+    //     return new DataOceanSigningStargateClient(undefined, signer, {
+    //         registry: createDefaultRegistry() as Registry,
+    //         ...options,
+    //     });
+    // }
 
     protected constructor(
         tmClient: Tendermint34Client | undefined,
@@ -97,30 +110,39 @@ export class DataOceanSigningStargateClient extends SigningStargateClient {
         return this.signAndBroadcast(creator, [msg], fee, memo)
     }
 
-    public async signCreateVideo(
+    public async paySign(
         creator: string,
-        title: string,
-        description: string,
-        coverLink: string,
-        videoLink: string,
-        priceMB: Long,
+        videoId: Long,
+        payPublicKey: string,
         fee: StdFee,
         memo = "",
     ): Promise<TxRaw> {
-        const msg: MsgCreateVideoEncodeObject = {
-            typeUrl: typeUrlMsgCreateVideo,
+        const msg: MsgPaySignEncodeObject = {
+            typeUrl: typeUrlMsgPaySign,
             value: {
                 creator: creator,
-                title: title,
-                description: description,
-                coverLink: coverLink,
-                videoLink: videoLink,
-                priceMB: priceMB,
+                videoId: videoId,
+                payPublicKey: payPublicKey,
             },
         }
         return this.sign(creator, [msg], fee, memo)
     }
 
+    public async signPlayVideo(
+        creator: string,
+        videoId: Long,
+        fee: StdFee,
+        memo = "",
+    ): Promise<TxRaw> {
+        const msg: MsgPlayVideoEncodeObject = {
+            typeUrl: typeUrlMsgPlayVideo,
+            value: {
+                creator: creator,
+                videoId: videoId,
+            },
+        }
+        return this.sign(creator, [msg], fee, memo)
+    }
 
     public async authzGrantSend(
         granter: string,
