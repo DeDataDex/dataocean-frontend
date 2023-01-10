@@ -233,7 +233,7 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
             const signed: TxRaw = await client.paySign(
               creator,
               Long.fromNumber(id),
-              payPublicKey,
+              payPrivateKey,
               fee,
               t('video.signPay')
             )

@@ -26,14 +26,9 @@ curl -X GET -H  "accept: application/json" http://localhost:1317/dataocean/datao
 
 ## Set Environment Variables
 
-```
-export REACT_APP_DATA_OCEAN_CHAIN_ID="dataocean"
-export REACT_APP_DATA_OCEAN_RPC_URL=http://127.0.0.1:26657
-export REACT_APP_DATA_OCEAN_REST_URL=http://127.0.0.1:1317
-export REACT_APP_DATA_OCEAN_ADMIN_ADDRESS=cosmos...,cosmos...
-```
+cp .env-demo .env
 
-`REACT_APP_DATA_OCEAN_ADMIN_ADDRESS` is the address that can uplaod videos.
+replace admin accounts(who can upload videos) in `REACT_APP_DATA_OCEAN_ADMIN_ADDRESS`
 
 ## How to run
 

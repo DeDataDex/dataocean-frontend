@@ -103,16 +103,16 @@ export class DataOceanSigningStargateClient extends SigningStargateClient {
     public async paySign(
         creator: string,
         videoId: Long,
-        payPublicKey: string,
+        payPrivateKey: string,
         fee: StdFee,
         memo = "",
     ): Promise<TxRaw> {
         const msg: MsgPaySignEncodeObject = {
             typeUrl: typeUrlMsgPaySign,
             value: {
-                creator: creator,
-                videoId: videoId,
-                payPublicKey: payPublicKey,
+                creator,
+                videoId,
+                payPrivateKey,
             },
         }
         return this.sign(creator, [msg], fee, memo)

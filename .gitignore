@@ -20,3 +20,6 @@ lintout.json
 
 # editors
 .idea
+src/types/generated/cosmos/authz/v1beta1/event.ts
+src/types/generated/cosmos/authz/v1beta1/genesis.ts
+.env
