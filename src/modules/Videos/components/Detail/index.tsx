@@ -282,7 +282,7 @@ class Detail extends PureComponent<IndexProps, IndexState> {
     const {accounts} = this.props;
     
     const accountAddress = (accounts && accounts.length) ? accounts[0].address : ''
-    console.log({videoPlayUrl, paySign, payPrivateKey, payPublicKey, grantee})
+    // console.log({videoPlayUrl, paySign, payPrivateKey, payPublicKey, grantee})
 
     const vieoPlayer = videoPlayUrl ? (
       <VideoPlayer src={videoPlayUrl} paySign={paySign} payPrivateKey={payPrivateKey} payPublicKey={payPublicKey} accountAddress={accountAddress} />

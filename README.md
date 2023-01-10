@@ -28,7 +28,30 @@ curl -X GET -H  "accept: application/json" http://localhost:1317/dataocean/datao
 
 cp .env-demo .env
 
-replace admin accounts(who can upload videos) in `REACT_APP_DATA_OCEAN_ADMIN_ADDRESS`
+1. replace admin accounts(who can upload videos) in `REACT_APP_DATA_OCEAN_ADMIN_ADDRESS`
+2. replace `REACT_APP_DATA_OCEAN_GRANTEE` with the `account.base_account.address` value of the response of the following `curl` cmd:
+
+```
+$ curl -X GET "http://localhost:1317/cosmos/auth/v1beta1/module_accounts/dataocean" -H  "accept: application/json"
+
+{
+  "account": {
+    "@type": "/cosmos.auth.v1beta1.ModuleAccount",
+    "base_account": {
+      "address": "cosmos1hzt8tfsl55g2aks6p5e0h5ldjc2axlyamdct6z",
+      "pub_key": null,
+      "account_number": "14",
+      "sequence": "0"
+    },
+    "name": "dataocean",
+    "permissions": [
+      "minter",
+      "burner",
+      "staking"
+    ]
+  }
+}
+```
 
 ## How to run
 

@@ -6,8 +6,9 @@ import * as types from './constants';
 
 export function* getGrantee(action: ReturnType<typeof actions.getVideo>) {
   try {
-    const res = yield call(withLoading, api.getGrantee, action.type, action.payload);
-    yield put(actions.setGrantee(res.account.base_account.address));
+    // const res = yield call(withLoading, api.getGrantee, action.type, action.payload);
+    // yield put(actions.setGrantee(res.account.base_account.address));
+    yield put(actions.setGrantee(process.env.REACT_APP_DATA_OCEAN_GRANTEE));
   } catch (err) {
     if (err.message) {
       console.log(err.message);

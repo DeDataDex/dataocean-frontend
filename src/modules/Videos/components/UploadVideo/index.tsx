@@ -225,10 +225,8 @@ const UploadVideo = ({
           fee,
           t('video.uploadAVideo')
         )
-      console.log({result})
       
-      const {code, transactionHash} = result
-      console.log({code, transactionHash})
+      const {code} = result
       setLoading(false)
       if (code === 0) {
         history.push('/videos/1');
