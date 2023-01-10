@@ -2,6 +2,7 @@ import React, { useEffect, RefObject } from 'react';
 import { useDispatch } from 'react-redux';
 import Hls from 'hls.js';
 import store from '@/Videos/store';
+import JSEncrypt from 'jsencrypt'
 
 export interface HlsPlayerProps
   extends React.VideoHTMLAttributes<HTMLVideoElement> {
@@ -9,6 +10,8 @@ export interface HlsPlayerProps
   playerRef?: RefObject<HTMLVideoElement>;
   src: string;
   paySign: string;
+  payPrivateKey: string;
+  payPublicKey: string;
   accountAddress: string;
 }
 
@@ -17,6 +20,8 @@ function ReactHlsPlayer({
   playerRef = React.createRef<HTMLVideoElement>(),
   src,
   paySign,
+  payPrivateKey,
+  payPublicKey,
   accountAddress = '',
   ...props
 }: HlsPlayerProps) {
@@ -77,9 +82,23 @@ function ReactHlsPlayer({
       });
 
       newHls.on(Hls.Events.FRAG_BUFFERED, function (event, data) {
-        const payload = {accountAddress, level: data.frag.level, sn: data.frag.sn, size: data.stats.total}
+        const payDataOrigin =  {
+          receivedSizeMB: data.stats.total,
+          timestamp: Math.ceil(new Date().getTime() / 1000),
+        }
+        
+        console.log({payDataOrigin})
+        const encryptor = new JSEncrypt()  
+        encryptor.setPublicKey(payPublicKey)
+        const payData = encryptor.encrypt(JSON.stringify(payDataOrigin))
+        // console.log({payData})
+        encryptor.setPrivateKey(payPrivateKey)
+        const uncrypted = payData && encryptor.decrypt(payData)
+        // console.log({uncrypted})
+
+        const payload = {creator: accountAddress, paySign, payData}
         dispatch(
-          store.actions.getVideoServerNotify(payload)
+          store.actions.playVideoNotify(payload)
         );
       });
 

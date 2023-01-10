@@ -66,9 +66,9 @@ export function getAccountBalance(payload: any, callback?: any) {
   };
 }
 
-export function getVideoServerNotify(payload: any) {
+export function playVideoNotify(payload: any) {
   return {
-    type: types.GET_VIDEO_SERVER_NOTIFY,
+    type: types.POST_VIDEO_PLAY_NOTIFY,
     payload,
   };
 }

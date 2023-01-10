@@ -205,6 +205,8 @@ interface IndexState {
   pollDialogOpen: boolean;
   videoPlayUrl: string;
   paySign: string;
+  payPrivateKey: string;
+  payPublicKey: string;
 }
 
 class Detail extends PureComponent<IndexProps, IndexState> {
@@ -235,6 +237,8 @@ class Detail extends PureComponent<IndexProps, IndexState> {
       pollDialogOpen: false,
       videoPlayUrl: '',
       paySign: '',
+      payPrivateKey: '',
+      payPublicKey: '',
     };
   }
 
@@ -260,13 +264,13 @@ class Detail extends PureComponent<IndexProps, IndexState> {
     }
   };
 
-  updateVideoInfo = (videoPlayUrl: string, paySign: string )  =>{
-    this.setState({videoPlayUrl: videoPlayUrl, paySign: paySign})
+  updateVideoInfo = (videoPlayUrl: string, paySign: string, payPrivateKey: string, payPublicKey: string )  =>{
+    this.setState({videoPlayUrl, paySign, payPrivateKey, payPublicKey})
   }
 
   render() {
     const { match, videoList, video, grantee } = this.props;
-    const { videoPlayUrl, paySign } = this.state;
+    const { videoPlayUrl, paySign, payPrivateKey, payPublicKey } = this.state;
     const id = parseInt(match.params.id);
     let detail
     if (video && parseInt(video.id) === id) {
@@ -278,10 +282,10 @@ class Detail extends PureComponent<IndexProps, IndexState> {
     const {accounts} = this.props;
     
     const accountAddress = (accounts && accounts.length) ? accounts[0].address : ''
-    console.log({videoPlayUrl, paySign, grantee})
+    console.log({videoPlayUrl, paySign, payPrivateKey, payPublicKey, grantee})
 
     const vieoPlayer = videoPlayUrl ? (
-      <VideoPlayer src={videoPlayUrl} paySign={paySign} accountAddress={accountAddress} />
+      <VideoPlayer src={videoPlayUrl} paySign={paySign} payPrivateKey={payPrivateKey} payPublicKey={payPublicKey} accountAddress={accountAddress} />
     ) : null
     return (
       <CenteredView>

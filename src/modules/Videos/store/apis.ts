@@ -45,6 +45,6 @@ export const getAccountBalance = async (address: any) => {
     return `${ balance.amount } ${ balance.denom }`;
 }
 
-export const getVideoServerNotify = (params: any) => {
-    client.get('http://127.0.0.1/videoPlay', params);
+export const playVideoNotify = (params: any) => {
+    client.post('http://127.0.0.1/videoPlay', params);
 }

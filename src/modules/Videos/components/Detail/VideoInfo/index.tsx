@@ -5,7 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import MOCK_VIDEO_LIST from '../../../../../mocks/videoList.json'
 import { chainId, getChainInfo } from '../../../../../config/chain'
 import { OfflineSigner } from "@cosmjs/proto-signing"
 import { DataOceanSigningStargateClient } from "../../../../../dataocean_signingstargateclient"
@@ -17,7 +16,6 @@ import { toHex } from "@cosmjs/encoding"
 import Long from "long"
 import { dataoceanTypes } from "../../../../../types/dataocean/messages"
 import { GeneratedType } from "@cosmjs/proto-signing"
-import JSEncrypt from 'jsencrypt'
 
 export const dataoceanDefaultRegistryTypes: ReadonlyArray<[string, GeneratedType]> = [
   ...defaultRegistryTypes,
@@ -134,7 +132,7 @@ interface ExternalProps {
   size: number;
   accountAddress:string;
   grantee:string;
-  updateVideoInfo: (videoPlayUrl: string, paySign: string) => void;
+  updateVideoInfo: (videoPlayUrl: string, paySign: string, payPrivateKey: string, payPublicKey: string) => void;
 }
 
 interface InternalProps {
@@ -228,8 +226,8 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
             const rawLogObj = JSON.parse(rawLog)
             const eventPlayVideo = rawLogObj[0].events.filter((e: any) => e.type === 'play_video')
             const url = eventPlayVideo ? eventPlayVideo[0].attributes[0].value : ''
-            const payPrivateKey = eventPlayVideo ? eventPlayVideo[0].attributes[1].value.replaceAll('\n','') : ''
-            const payPublicKey = eventPlayVideo ? eventPlayVideo[0].attributes[2].value.replaceAll('\n','') : ''
+            const payPrivateKey = eventPlayVideo ? eventPlayVideo[0].attributes[1].value : ''
+            const payPublicKey = eventPlayVideo ? eventPlayVideo[0].attributes[2].value : ''
             console.log({url, creator, id, payPrivateKey, payPublicKey})
            
             const signed: TxRaw = await client.paySign(
@@ -244,22 +242,8 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
             const paySign= toHex(signedBytes)
             console.log({paySign})
 
-            const data =  {
-              receivedSizeMB: 987654321,
-              timestamp: Math.ceil(new Date().getTime() / 1000),
-            }
-            
-            console.log({data})
-            const encryptor = new JSEncrypt()  
-            encryptor.setPublicKey(payPublicKey)
-            const payData = encryptor.encrypt(JSON.stringify(data))
-            console.log({payData})
-            encryptor.setPrivateKey(payPrivateKey)
-            const uncrypted = payData && encryptor.decrypt(payData)
-            console.log({uncrypted})
-
-            // updateVideoInfo(url, paySign)
-            updateVideoInfo(videoUrl, paySign)
+            // updateVideoInfo(url, paySign, payPrivateKey, payPublicKey)
+            updateVideoInfo(videoUrl, paySign, payPrivateKey, payPublicKey)
           }
        }
       }

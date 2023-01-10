@@ -18,4 +18,6 @@ export const SET_VIDEO_LIST = `${ SCOPENAME }/SET_VIDEO_LIST`;
 
 // account balnace
 export const GET_ACCOUNT_BALANCE = `${ SCOPENAME }/GET_ACCOUNT_BALANCE`;
-export const GET_VIDEO_SERVER_NOTIFY = `${ SCOPENAME }/GET_VIDEO_SERVER_NOTIFY`;
+
+// video play notify
+export const POST_VIDEO_PLAY_NOTIFY = `${ SCOPENAME }/POST_VIDEO_PLAY_NOTIFY`;
