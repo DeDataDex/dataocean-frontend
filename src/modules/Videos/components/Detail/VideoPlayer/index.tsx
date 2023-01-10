@@ -87,14 +87,17 @@ function ReactHlsPlayer({
           timestamp: Math.ceil(new Date().getTime() / 1000),
         }
         
+        console.log({paySign})
         console.log({payDataOrigin})
+        console.log({payPublicKey})
+        console.log({payPrivateKey})
         const encryptor = new JSEncrypt()  
         encryptor.setPublicKey(payPublicKey)
         const payData = encryptor.encrypt(JSON.stringify(payDataOrigin))
-        // console.log({payData})
+        console.log({payData})
         encryptor.setPrivateKey(payPrivateKey)
         const uncrypted = payData && encryptor.decrypt(payData)
-        // console.log({uncrypted})
+        console.log({uncrypted})
 
         const payload = {creator: accountAddress, paySign, payData}
         dispatch(
