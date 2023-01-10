@@ -213,7 +213,6 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
       )
 
       const {code} = result
-      console.log({code})
       if (code === 0) {
         const result2: DeliverTxResponse = await client.playVideo(
           creator,
@@ -226,9 +225,9 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
             const rawLogObj = JSON.parse(rawLog)
             const eventPlayVideo = rawLogObj[0].events.filter((e: any) => e.type === 'play_video')
             const url = eventPlayVideo ? eventPlayVideo[0].attributes[0].value : ''
-            // const payPrivateKey = eventPlayVideo ? eventPlayVideo[0].attributes[1].value.replaceAll('\n','') : ''
+            const payPrivateKey = eventPlayVideo ? eventPlayVideo[0].attributes[1].value.replaceAll('\n','') : ''
             const payPublicKey = eventPlayVideo ? eventPlayVideo[0].attributes[2].value.replaceAll('\n','') : ''
-            console.log({url, creator, id, payPublicKey})
+            console.log({url, creator, id, payPrivateKey, payPublicKey})
            
             const signed: TxRaw = await client.paySign(
               creator,
@@ -242,7 +241,6 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
             console.log({paySign})
 
             const data =  {
-              videoId: id,
               receivedSizeMB: 987654321,
               timestamp: Math.ceil(new Date().getTime() / 1000),
             }
@@ -252,9 +250,9 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
             encryptor.setPublicKey(payPublicKey)
             const payData = encryptor.encrypt(JSON.stringify(data))
             console.log({payData})
-            // encryptor.setPrivateKey(payPrivateKey)
-            // const uncrypted = payData && encryptor.decrypt(payData)
-            // console.log({uncrypted})
+            encryptor.setPrivateKey(payPrivateKey)
+            const uncrypted = payData && encryptor.decrypt(payData)
+            console.log({uncrypted})
 
             // updateVideoInfo(url, paySign)
             updateVideoInfo(videoUrl, paySign)
@@ -278,6 +276,7 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
 
   render() {
     const {
+      accountAddress,
       name,
       desc,
       picUrl,
@@ -314,8 +313,8 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
                 <Typography variant="body2" gutterBottom>
                   {t('video.size')}: {_size}
                 </Typography> */}
-                <Button variant="contained" color="primary" onClick={this.handlePlay} className={classes.play} disabled={loading}>
-                  {loading ? t('video.loading') : t('video.play')}
+                <Button variant="contained" color="primary" onClick={this.handlePlay} className={classes.play} disabled={(!accountAddress || loading)}>
+                  {!accountAddress ? t('video.play') : (loading ? t('video.loading') : t('video.play'))}
                 </Button>
               </Grid>
             </Grid>
