@@ -133,6 +133,7 @@ interface ExternalProps {
   duration: number;
   size: number;
   accountAddress:string;
+  updateVideoInfo: (videoPlayUrl: string, paySign: string) => void;
 }
 
 interface InternalProps {
@@ -144,12 +145,12 @@ interface Props extends ExternalProps, InternalProps {
   t: any;
 }
 
-interface PollCardState {
+interface VideoCardState {
   displayHover: boolean;
-  pollData: any;
+  loading: boolean;
 }
 
-class VideoInfo extends PureComponent<Props, PollCardState> {
+class VideoInfo extends PureComponent<Props, VideoCardState> {
   // eslint-disable-next-line react/static-property-placement
   static defaultProps = {
     key: undefined,
@@ -162,24 +163,24 @@ class VideoInfo extends PureComponent<Props, PollCardState> {
     duration: undefined,
     size: undefined,
     accountAddress: undefined,
+    updateVideoInfo: () => {},
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
       displayHover: false,
-      pollData: undefined,
+      loading: false,
     };
   }
 
   componentDidMount() {
-    const data =  MOCK_VIDEO_LIST.data.list[0]
-    this.setState({ pollData: data });
   }
 
   handlePlay = async() => {
     try {
-      const {accountAddress, id} = this.props
+      this.setState({ loading: true });
+      const {accountAddress, id, videoUrl, updateVideoInfo} = this.props
       const { keplr } = window
       if (!keplr) {
           alert("You need to install Keplr")
@@ -254,11 +255,16 @@ class VideoInfo extends PureComponent<Props, PollCardState> {
             // encryptor.setPrivateKey(payPrivateKey)
             // const uncrypted = payData && encryptor.decrypt(payData)
             // console.log({uncrypted})
+
+            // updateVideoInfo(url, paySign)
+            updateVideoInfo(videoUrl, paySign)
           }
        }
       }
     } catch (e) {
       console.error(e);
+    } finally {
+      this.setState({ loading: false });
     }
   };
 
@@ -272,14 +278,14 @@ class VideoInfo extends PureComponent<Props, PollCardState> {
 
   render() {
     const {
-    name,
-    desc,
-    picUrl,
-    price,
-      classes,
-      t,
+      name,
+      desc,
+      picUrl,
+      price,
+        classes,
+        t,
     } = this.props;
-    
+    const { loading } = this.state
     const imgAlt = `【${name}】${desc}`
     const imgUrl = `/videoPics/${picUrl}`
     // const _duration = '120 分钟'
@@ -308,8 +314,8 @@ class VideoInfo extends PureComponent<Props, PollCardState> {
                 <Typography variant="body2" gutterBottom>
                   {t('video.size')}: {_size}
                 </Typography> */}
-                <Button variant="contained" color="primary" onClick={this.handlePlay} className={classes.play}>
-                  {t('video.play')}
+                <Button variant="contained" color="primary" onClick={this.handlePlay} className={classes.play} disabled={loading}>
+                  {loading ? t('video.loading') : t('video.play')}
                 </Button>
               </Grid>
             </Grid>

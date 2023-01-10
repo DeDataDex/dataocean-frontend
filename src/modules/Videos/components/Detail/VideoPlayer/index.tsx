@@ -8,6 +8,7 @@ export interface HlsPlayerProps
   hlsConfig?: any;
   playerRef?: RefObject<HTMLVideoElement>;
   src: string;
+  paySign: string;
   accountAddress: string;
 }
 
@@ -15,6 +16,7 @@ function ReactHlsPlayer({
   hlsConfig,
   playerRef = React.createRef<HTMLVideoElement>(),
   src,
+  paySign,
   accountAddress = '',
   ...props
 }: HlsPlayerProps) {

@@ -16,7 +16,6 @@ const selector = createSelector(
     accounts: current.accounts,
     videoList: current.videoList,
     video: current.video,
-    pollVotes: current.pollVotes,
     loading
   })
 );

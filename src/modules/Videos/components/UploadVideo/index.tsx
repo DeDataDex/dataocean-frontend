@@ -168,7 +168,6 @@ const UploadVideo = ({
     event: React.ChangeEvent<{ value: unknown; name: string }>,
   ) => {
     const { value, name } = event.target;
-    // console.log(value, name);
     setForm({
       ...form,
       [name]: value,
@@ -182,14 +181,13 @@ const UploadVideo = ({
   const handleClose = () => {
     setForm(fields);
     setErrors({});
-    // onClose();
+    history.push('/videos/1');
   };
 
   const handleSubmit = async () => {
     try {
       setLoading(true);
       const inputs = await validateFields();
-      console.log({inputs});
 
       const accountAddress = (accounts && accounts.length) ? accounts[0].address : ''
       const { keplr } = window

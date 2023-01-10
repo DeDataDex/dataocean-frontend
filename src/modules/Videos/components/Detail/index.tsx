@@ -185,7 +185,6 @@ interface IndexProps {
   match: any;
   video: any;
   videoList: any;
-  pollVotes: any;
   accounts: any[];
   getVideo: (data: any, callback?: any) => any;
   history: any;
@@ -202,6 +201,8 @@ interface IndexState {
   rowsPerPage: number;
   detail: Record<string, any>;
   pollDialogOpen: boolean;
+  videoPlayUrl: string;
+  paySign: string;
 }
 
 class Detail extends PureComponent<IndexProps, IndexState> {
@@ -210,7 +211,6 @@ class Detail extends PureComponent<IndexProps, IndexState> {
     match: {},
     video: undefined,
     videoList: undefined,
-    pollVotes: undefined,
     accounts: [],
   };
 
@@ -230,6 +230,8 @@ class Detail extends PureComponent<IndexProps, IndexState> {
       rowsPerPage: 5,
       detail: {},
       pollDialogOpen: false,
+      videoPlayUrl: '',
+      paySign: '',
     };
   }
 
@@ -252,9 +254,13 @@ class Detail extends PureComponent<IndexProps, IndexState> {
     }
   };
 
+  updateVideoInfo = (videoPlayUrl: string, paySign: string )  =>{
+    this.setState({videoPlayUrl: videoPlayUrl, paySign: paySign})
+  }
 
   render() {
     const { match, videoList, video  } = this.props;
+    const { videoPlayUrl, paySign } = this.state;
     const id = parseInt(match.params.id);
     let detail
     if (video && parseInt(video.id) === id) {
@@ -266,16 +272,20 @@ class Detail extends PureComponent<IndexProps, IndexState> {
     const {accounts} = this.props;
     
     const accountAddress = (accounts && accounts.length) ? accounts[0].address : ''
+    console.log({videoPlayUrl, paySign})
+
+    const vieoPlayer = videoPlayUrl ? (
+      <VideoPlayer src={videoPlayUrl} paySign={paySign} accountAddress={accountAddress} />
+    ) : null
     return (
       <CenteredView>
         {
           accountAddress ? (
-            <VideoPlayer src={detail?.videoLink || ''} accountAddress={accountAddress} />
+            vieoPlayer
           ) : (
             'Please connect wallet to play video'
           )
-        } 
-
+        }
         {
           detail ? (
             <VideoInfo
@@ -289,6 +299,7 @@ class Detail extends PureComponent<IndexProps, IndexState> {
               duration={detail.duration || 360000}
               size={detail.size || 536870912000}
               accountAddress={accountAddress}
+              updateVideoInfo={this.updateVideoInfo}
             />
           ) : (
             <LoadingOutlined />
