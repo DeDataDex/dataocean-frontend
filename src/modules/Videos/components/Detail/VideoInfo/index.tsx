@@ -203,9 +203,6 @@ class VideoInfo extends PureComponent<Props, PollCardState> {
             gasPrice: GasPrice.fromString("1stake"),
         },
       )
-     
-     
-
 
       const grantee = "cosmos1hzt8tfsl55g2aks6p5e0h5ldjc2axlyamdct6z"
       const result: DeliverTxResponse = await client.authzGrantSend(
@@ -228,6 +225,7 @@ class VideoInfo extends PureComponent<Props, PollCardState> {
             const rawLogObj = JSON.parse(rawLog)
             const eventPlayVideo = rawLogObj[0].events.filter((e: any) => e.type === 'play_video')
             const url = eventPlayVideo ? eventPlayVideo[0].attributes[0].value : ''
+            // const payPrivateKey = eventPlayVideo ? eventPlayVideo[0].attributes[1].value.replaceAll('\n','') : ''
             const payPublicKey = eventPlayVideo ? eventPlayVideo[0].attributes[2].value.replaceAll('\n','') : ''
             console.log({url, creator, id, payPublicKey})
            
@@ -248,11 +246,14 @@ class VideoInfo extends PureComponent<Props, PollCardState> {
               timestamp: Math.ceil(new Date().getTime() / 1000),
             }
             
-
+            console.log({data})
             const encryptor = new JSEncrypt()  
             encryptor.setPublicKey(payPublicKey)
             const payData = encryptor.encrypt(JSON.stringify(data))
             console.log({payData})
+            // encryptor.setPrivateKey(payPrivateKey)
+            // const uncrypted = payData && encryptor.decrypt(payData)
+            // console.log({uncrypted})
           }
        }
       }
