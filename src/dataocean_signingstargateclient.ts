@@ -49,16 +49,6 @@ export class DataOceanSigningStargateClient extends SigningStargateClient {
         })
     }
 
-    // public static async offline(
-    //     signer: OfflineSigner,
-    //     options: SigningStargateClientOptions = {},
-    // ): Promise<DataOceanSigningStargateClient> {
-    //     return new DataOceanSigningStargateClient(undefined, signer, {
-    //         registry: createDefaultRegistry() as Registry,
-    //         ...options,
-    //     });
-    // }
-
     protected constructor(
         tmClient: Tendermint34Client | undefined,
         signer: OfflineSigner,
@@ -148,6 +138,7 @@ export class DataOceanSigningStargateClient extends SigningStargateClient {
         granter: string,
         grantee: string,
         fee: StdFee | "auto" | number,
+        memo = "",
     ): Promise<DeliverTxResponse> {
         const msg = MsgGrant.fromPartial({
             granter: granter,
@@ -170,6 +161,6 @@ export class DataOceanSigningStargateClient extends SigningStargateClient {
             value: msg,
         };
 
-        return this.signAndBroadcast(granter, [msgAny], fee);
+        return this.signAndBroadcast(granter, [msgAny], fee, memo);
     }
 }

@@ -182,7 +182,7 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
   handlePlay = async() => {
     try {
       this.setState({ loading: true });
-      const { id, grantee, videoUrl, updateVideoInfo} = this.props
+      const { t, id, grantee, videoUrl, updateVideoInfo} = this.props
       const { keplr } = window
       if (!keplr) {
           alert("You need to install Keplr")
@@ -210,7 +210,8 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
       const result: DeliverTxResponse = await client.authzGrantSend(
         creator,
         grantee,
-        fee
+        fee,
+        t('video.authGrantSend')
       )
 
       const {code} = result
@@ -218,7 +219,8 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
         const result2: DeliverTxResponse = await client.playVideo(
           creator,
           Long.fromNumber(id),
-          fee
+          fee,
+          t('video.getVideoPlayUrl')
         )
         const {code: code2, rawLog} = result2
         if (code2 === 0) {
@@ -234,7 +236,8 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
               creator,
               Long.fromNumber(id),
               payPublicKey,
-              fee
+              fee,
+              t('video.signPay')
             )
             const signedBytes= TxRaw.encode(signed).finish()
             // dataoceand tx decode [paySign] --hex

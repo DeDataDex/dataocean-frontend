@@ -13,6 +13,9 @@
     "searchNotFoundDetail": "Try going back to where you were or heading to the <a href=\"/\">home</a> page."
   },
   "video": {
+    "authGrantSend": "Auth Grant Send",
+    "getVideoPlayUrl": "Get Video Play Url",
+    "signPay": "Sign Payment",
     "play": "Play",
     "price": "Price",
     "duration": "Duration",
