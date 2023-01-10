@@ -134,6 +134,7 @@ const UploadVideo = ({
   const [form, setForm] = useState<Record<string, any>>(fields);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const chain = getChainInfo();
 
@@ -186,6 +187,7 @@ const UploadVideo = ({
 
   const handleSubmit = async () => {
     try {
+      setLoading(true);
       const inputs = await validateFields();
       console.log({inputs});
 
@@ -228,14 +230,13 @@ const UploadVideo = ({
       
       const {code, transactionHash} = result
       console.log({code, transactionHash})
+      setLoading(false)
       if (code === 0) {
         history.push('/videos/1');
       }
-
-      const txResult = await client.getTx(transactionHash)
-      console.log({txResult})
     } catch (e) {
       console.error(e);
+      setLoading(false)
     }
   };
 
@@ -407,11 +408,11 @@ const UploadVideo = ({
           </Box>
           <Box className={classes.formBox}>
             <DialogActions>
-              <Button variant="contained" color="secondary" onClick={handleClose}>
+              <Button variant="contained" color="secondary" onClick={handleClose} disabled={loading}>
                 {t('video.cancel')}
               </Button>
-              <Button variant="contained" color="primary" onClick={handleSubmit}>
-                {t('video.upload')}
+              <Button variant="contained" color="primary" onClick={handleSubmit} disabled={loading}>
+                {loading ? t('video.loading') : t('video.upload')}
               </Button>
             </DialogActions>
           </Box>
