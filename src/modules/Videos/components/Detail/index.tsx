@@ -2,6 +2,7 @@
 import { PureComponent } from 'react';
 import { withTranslation } from 'react-i18next';
 import { LoadingOutlined } from '@ant-design/icons';
+import Alert from '@material-ui/lab/Alert';
 import { createStyles, withStyles, Theme } from '@material-ui/core/styles';
 import CenteredView from '@/common/View/CenteredView';
 import VideoPlayer from './VideoPlayer'
@@ -269,7 +270,7 @@ class Detail extends PureComponent<IndexProps, IndexState> {
   }
 
   render() {
-    const { match, videoList, video, grantee } = this.props;
+    const { t, match, videoList, video, grantee } = this.props;
     const { videoPlayUrl, paySign, payPrivateKey, payPublicKey } = this.state;
     const id = parseInt(match.params.id);
     let detail
@@ -293,7 +294,7 @@ class Detail extends PureComponent<IndexProps, IndexState> {
           accountAddress ? (
             vieoPlayer
           ) : (
-            'Please connect wallet to play video'
+            <Alert severity="error">{t('video.connectWarning')}</Alert>
           )
         }
         {

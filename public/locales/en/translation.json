@@ -13,6 +13,7 @@
     "searchNotFoundDetail": "Try going back to where you were or heading to the <a href=\"/\">home</a> page."
   },
   "video": {
+    "connectWarning": "Please connect wallet to play video",
     "authGrantSend": "Auth Grant Send",
     "getVideoPlayUrl": "Get Video Play Url",
     "signPay": "Sign Payment",
