@@ -111,11 +111,11 @@ interface UploadVideoProps {
 }
 
 const fields = {
-  title: '',
-  description: '',
-  picUrl: '',
-  videoUrl: '',
-  price: '',
+  title: '大雄兔',
+  description: '大雄兔是Blender基金會第2部開放授權、創作共享的動畫電影，代號Peach。片長10分鐘，Big Buck Bunny全部使用開放原始碼軟體製作，彩現的計算機叢集使用昇陽電腦公司的Sun Grid亦是開放原始碼的 製作技術和素材徹底公開。不同於上一個專案Elephants Dream，本篇全程無語音',
+  picUrl: 'bigbuckbunny.jpg',
+  videoUrl: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
+  price: '10',
 };
 
 const requiredFields = Object.keys(fields);
