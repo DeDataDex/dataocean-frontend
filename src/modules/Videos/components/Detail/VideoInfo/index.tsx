@@ -203,7 +203,7 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
         chain.rpc,
         offlineSigner,
         {
-            gasPrice: GasPrice.fromString("1stake"),
+            gasPrice: GasPrice.fromString("0stake"),
         },
       )
 
@@ -296,7 +296,7 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
                   {desc}
                 </Typography>
                 <Typography variant="body2" gutterBottom>
-                  {t('video.price')}: {price} token/MB
+                  {t('video.price')}: {price} TOKEN/MB
                 </Typography>
                 {/* <Typography variant="body2" gutterBottom>
                   {t('video.duration')}: {_duration}

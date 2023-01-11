@@ -32,7 +32,7 @@
     "videoUrl": "Video Url",
     "picUrlHelperText": "Please input pic url.",
     "videoUrlHelperText": "Please input video url.",
-    "priceHelperText": "Please input stake amount per MB.",
+    "priceHelperText": "Please input TOKEN amount per MB.",
     "discussion": "Discussion",
     "yes": "Yes",
     "no": "No",

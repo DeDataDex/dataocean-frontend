@@ -206,7 +206,7 @@ const UploadVideo = ({
         chain.rpc,
         offlineSigner,
         {
-            gasPrice: GasPrice.fromString("1stake"),
+            gasPrice: GasPrice.fromString("0stake"),
         },
       )
 
@@ -370,7 +370,7 @@ const UploadVideo = ({
               helperText={errors.price ? helperTextMaps.price : undefined}
               error={errors.price}
               value={price}
-              label={`${t('video.price')} stake/MB`}
+              label={`${t('video.price')} TOKEN/MB`}
               fullWidth
               onChange={handleFormChange}
             />

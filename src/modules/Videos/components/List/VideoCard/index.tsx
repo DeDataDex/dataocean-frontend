@@ -200,7 +200,7 @@ class VideoCard extends PureComponent<Props, PollCardState> {
             </div>
             <div className={classes.content}>
               <Typography variant="body2" gutterBottom>
-                {t('video.price')}: {price} token/MB
+                {t('video.price')}: {price} TOKEN/MB
               </Typography>
               {/* <Typography variant="body2" gutterBottom>
                 {t('video.duration')}: {_duration}
