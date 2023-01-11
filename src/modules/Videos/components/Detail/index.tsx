@@ -310,6 +310,7 @@ class Detail extends PureComponent<IndexProps, IndexState> {
               size={detail.size || 536870912000}
               accountAddress={accountAddress}
               grantee={grantee}
+              videoPlayUrl={videoPlayUrl}
               updateVideoInfo={this.updateVideoInfo}
             />
           ) : (

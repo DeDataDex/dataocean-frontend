@@ -132,6 +132,7 @@ interface ExternalProps {
   size: number;
   accountAddress:string;
   grantee:string;
+  videoPlayUrl:string;
   updateVideoInfo: (videoPlayUrl: string, paySign: string, payPrivateKey: string, payPublicKey: string) => void;
 }
 
@@ -163,6 +164,7 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
     size: undefined,
     accountAddress: undefined,
     grantee: undefined,
+    videoPlayUrl: undefined,
     updateVideoInfo: () => {},
   };
 
@@ -265,6 +267,7 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
   render() {
     const {
       accountAddress,
+      videoPlayUrl,
       name,
       desc,
       picUrl,
@@ -301,7 +304,7 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
                 <Typography variant="body2" gutterBottom>
                   {t('video.size')}: {_size}
                 </Typography> */}
-                <Button variant="contained" color="primary" onClick={this.handlePlay} className={classes.play} disabled={(!accountAddress || loading)}>
+                <Button variant="contained" color="primary" onClick={this.handlePlay} className={classes.play} disabled={(!!videoPlayUrl || !accountAddress || loading)}>
                   {!accountAddress ? t('video.play') : (loading ? t('video.loading') : t('video.play'))}
                 </Button>
               </Grid>
