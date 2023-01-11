@@ -100,9 +100,9 @@ function ReactHlsPlayer({
         const uncrypted = payData && encryptor.decrypt(payData)
         console.log({uncrypted})
 
-        const payload = {creator: accountAddress, paySign, payData}
+        const payload = { paySign, payData }
         dispatch(
-          store.actions.playVideoNotify(payload)
+          store.actions.sendVoucher(payload)
         );
       });
 

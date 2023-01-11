@@ -45,6 +45,6 @@ export const getAccountBalance = async (address: any) => {
     return `${ balance.amount } ${ balance.denom }`;
 }
 
-export const playVideoNotify = (params: any) => {
-    client.post('http://127.0.0.1/videoPlay', params);
+export const sendVoucher = (params: any) => {
+    client.post(`${ process.env.REACT_APP_DATA_OCEAN_BACKEND_URL }/sendVoucher`, params);
 }

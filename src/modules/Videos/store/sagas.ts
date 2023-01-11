@@ -68,9 +68,9 @@ function* watchGetAccountBalance() {
   yield takeLatest(types.GET_ACCOUNT_BALANCE, getAccountBalance)
 }
 
-export function* playVideoNotify(action: ReturnType<typeof actions.playVideoNotify>) {
+export function* sendVoucher(action: ReturnType<typeof actions.sendVoucher>) {
   try {
-    yield call(withLoading, api.playVideoNotify, action.type, action.payload);
+    yield call(withLoading, api.sendVoucher, action.type, action.payload);
   } catch (err) {
     if (err.message) {
       console.log(err.message);
@@ -79,7 +79,7 @@ export function* playVideoNotify(action: ReturnType<typeof actions.playVideoNoti
 }
 
 function* watchPlayVideoNotify() {
-  yield takeLatest(types.POST_VIDEO_PLAY_NOTIFY, playVideoNotify)
+  yield takeLatest(types.POST_SEND_VOUCHER, sendVoucher)
 }
 
 const sagas = [
