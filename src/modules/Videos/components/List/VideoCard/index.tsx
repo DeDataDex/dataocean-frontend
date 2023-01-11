@@ -177,8 +177,8 @@ class VideoCard extends PureComponent<Props, PollCardState> {
     const url=`/videos/detail/${id}`
     const imgAlt = `【${name}】${desc}`
     const pUrl = `/videoPics/${picUrl}`
-    const _duration = '120 分钟'
-    const _size = '500 M'
+    // const _duration = '120 分钟'
+    // const _size = '500 M'
     return (
       <Link component={NavLink} to={url} underline="none">
         <div
@@ -200,14 +200,14 @@ class VideoCard extends PureComponent<Props, PollCardState> {
             </div>
             <div className={classes.content}>
               <Typography variant="body2" gutterBottom>
-                {t('video.price')}: {price}
+                {t('video.price')}: {price} token/MB
               </Typography>
-              <Typography variant="body2" gutterBottom>
+              {/* <Typography variant="body2" gutterBottom>
                 {t('video.duration')}: {_duration}
               </Typography>
               <Typography variant="body2" gutterBottom>
                 {t('video.size')}: {_size}
-              </Typography>
+              </Typography> */}
             </div>
           </Card>
         </div>

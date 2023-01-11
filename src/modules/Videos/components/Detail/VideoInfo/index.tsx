@@ -296,7 +296,7 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
                   {desc}
                 </Typography>
                 <Typography variant="body2" gutterBottom>
-                  {t('video.price')}: {price}
+                  {t('video.price')}: {price} token/MB
                 </Typography>
                 {/* <Typography variant="body2" gutterBottom>
                   {t('video.duration')}: {_duration}
