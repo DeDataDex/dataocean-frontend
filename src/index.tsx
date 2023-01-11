@@ -53,8 +53,8 @@ ReactDOM.render(
     <ConnectedRouter history={history}>
       <Switch>
         <RouteWithLayout exact path={withBaseRoute('/')} title="NetworkRedirect" layout={MainLayout} component={NetworkRedirect} />
-        <RouteWithLayout path={withBaseRoute('/videos')} title="Poll" layout={MainLayout} component={Videos} />
-        <RouteWithLayout path={withBaseRoute('/edit_poll/:id')} title="Edit Poll" layout={MainLayout} component={EditVideo} />
+        <RouteWithLayout path={withBaseRoute('/videos')} title="Video" layout={MainLayout} component={Videos} />
+        <RouteWithLayout path={withBaseRoute('/edit_poll/:id')} title="Edit Video" layout={MainLayout} component={EditVideo} />
         <RouteWithLayout exact path={withBaseRoute('/error')} title="404" layout={MainLayout} component={Error404} />
         <RouteWithLayout path={undefined} title="404" layout={MainLayout} component={Error404} />
       </Switch>

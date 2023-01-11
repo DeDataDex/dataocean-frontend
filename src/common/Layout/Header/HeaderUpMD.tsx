@@ -149,8 +149,6 @@ function Index(props: any) {
 
   // connectStatusChange callback
   const handleNewAccounts = useCallback( (newAccounts: any[]) => {
-    console.log('handleNewAccounts',{newAccounts})
-
     const isWalletConnected = newAccounts.length > 0;
     if (isWalletConnected) {
       // onAccountChange(newAccounts);
