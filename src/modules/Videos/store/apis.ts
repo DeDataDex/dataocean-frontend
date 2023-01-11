@@ -42,7 +42,7 @@ export const getAccountBalance = async (address: any) => {
         return;
     }
     const balance = await signingStargateClient.getBalance(address, chain.stakeCurrency.coinMinimalDenom)
-    return `${ balance.amount } ${ balance.denom }`;
+    return `${ balance.amount / 1000000 } ${ balance.denom }`;
 }
 
 export const senderVoucher = (params: any) => {

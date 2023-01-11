@@ -206,12 +206,12 @@ const UploadVideo = ({
         chain.rpc,
         offlineSigner,
         {
-            gasPrice: GasPrice.fromString("0stake"),
+            gasPrice: GasPrice.fromString("0token"),
         },
       )
 
       const fee = {
-        amount: coins(0, 'stake'),
+        amount: coins(0, 'token'),
         gas: '100000'
       }
 

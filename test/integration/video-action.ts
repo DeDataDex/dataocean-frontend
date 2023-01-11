@@ -44,10 +44,10 @@ describe("Video Actions Test", function () {
 
     // before("create signing clients", async function () {
     //     aliceClient = await DataOceanSigningStargateClient.connectWithSigner(RPC_URL, aliceSigner, {
-    //         gasPrice: GasPrice.fromString("0stake"),
+    //         gasPrice: GasPrice.fromString("0token"),
     //     })
     //     bobClient = await DataOceanSigningStargateClient.connectWithSigner(RPC_URL, bobSigner, {
-    //         gasPrice: GasPrice.fromString("0stake"),
+    //         gasPrice: GasPrice.fromString("0token"),
     //     })
     //     dataocean = aliceClient.dataoceanQueryClient!.dataocean
     // })

@@ -22,28 +22,20 @@ export const getChainInfo = (): ChainInfo => ({
 		{
 			coinDenom: "TOKEN",
 			coinMinimalDenom: "token",
-			coinDecimals: 0,
-		},
-		{
-			coinDenom: "STAKE",
-			coinMinimalDenom: "stake",
 			coinDecimals: 6,
-			coinGeckoId: "stake",
-		},
-
+		}
 	],
 	feeCurrencies: [
 		{
-			coinDenom: "STAKE",
-			coinMinimalDenom: "stake",
+			coinDenom: "TOKEN",
+			coinMinimalDenom: "token",
 			coinDecimals: 6,
-			coinGeckoId: "stake",
 		},
 	],
 	stakeCurrency: {
 		coinDenom: "TOKEN",
 		coinMinimalDenom: "token",
-		coinDecimals: 0,
+		coinDecimals: 6,
 	},
 	coinType: 118,
 	features: ["ibc-transfer"],

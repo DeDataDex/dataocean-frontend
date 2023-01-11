@@ -193,7 +193,7 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
       const offlineSigner: OfflineSigner = keplr.getOfflineSigner!(chainId)
 
       const fee = {
-        amount: coins(0, 'stake'),
+        amount: coins(0, 'token'),
         gas: '100000'
       }
 
@@ -203,7 +203,7 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
         chain.rpc,
         offlineSigner,
         {
-            gasPrice: GasPrice.fromString("0stake"),
+            gasPrice: GasPrice.fromString("0token"),
         },
       )
 

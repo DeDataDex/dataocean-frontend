@@ -147,7 +147,7 @@ export class DataOceanSigningStargateClient extends SigningStargateClient {
                 authorization: {
                     typeUrl: "/cosmos.bank.v1beta1.SendAuthorization",
                     value: SendAuthorizationProto.encode(
-                        { spendLimit: [{ denom: "token", amount: "1000" }] }
+                        { spendLimit: [{ denom: "token", amount: "1000000000" }] }
                     ).finish(),
                 },
                 expiration: {
