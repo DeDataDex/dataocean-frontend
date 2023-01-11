@@ -68,9 +68,9 @@ function* watchGetAccountBalance() {
   yield takeLatest(types.GET_ACCOUNT_BALANCE, getAccountBalance)
 }
 
-export function* sendVoucher(action: ReturnType<typeof actions.sendVoucher>) {
+export function* senderVoucher(action: ReturnType<typeof actions.senderVoucher>) {
   try {
-    yield call(withLoading, api.sendVoucher, action.type, action.payload);
+    yield call(withLoading, api.senderVoucher, action.type, action.payload);
   } catch (err) {
     if (err.message) {
       console.log(err.message);
@@ -79,7 +79,7 @@ export function* sendVoucher(action: ReturnType<typeof actions.sendVoucher>) {
 }
 
 function* watchPlayVideoNotify() {
-  yield takeLatest(types.POST_SEND_VOUCHER, sendVoucher)
+  yield takeLatest(types.POST_SENDER_VOUCHER, senderVoucher)
 }
 
 const sagas = [

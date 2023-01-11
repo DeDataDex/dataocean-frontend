@@ -66,9 +66,9 @@ export function getAccountBalance(payload: any, callback?: any) {
   };
 }
 
-export function sendVoucher(payload: any) {
+export function senderVoucher(payload: any) {
   return {
-    type: types.POST_SEND_VOUCHER,
+    type: types.POST_SENDER_VOUCHER,
     payload,
   };
 }

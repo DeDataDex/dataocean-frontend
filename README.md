@@ -53,7 +53,7 @@ $ curl -X GET "http://localhost:1317/cosmos/auth/v1beta1/module_accounts/dataoce
 }
 ```
 
-3. replace `REACT_APP_DATA_OCEAN_BACKEND_URL` for POST `sendVoucher` info while playing video
+3. replace `REACT_APP_DATA_OCEAN_BACKEND_URL` for POST `senderVoucher` info while playing video
 
 ## How to run
 

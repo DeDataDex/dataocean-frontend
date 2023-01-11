@@ -244,8 +244,8 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
             const paySign= toHex(signedBytes)
             console.log({paySign})
 
-            // updateVideoInfo(url, paySign, payPrivateKey, payPublicKey)
-            updateVideoInfo(videoUrl, paySign, payPrivateKey, payPublicKey)
+            updateVideoInfo(url, paySign, payPrivateKey, payPublicKey)
+            // updateVideoInfo(videoUrl, paySign, payPrivateKey, payPublicKey)
           }
        }
       }

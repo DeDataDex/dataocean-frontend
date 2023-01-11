@@ -77,6 +77,7 @@ class Client {
       url,
       data,
       method: 'POST',
+      headers: { "Content-Type": "multipart/form-data" },
     };
     return this.request(defaultOption, option);
   }

@@ -45,6 +45,10 @@ export const getAccountBalance = async (address: any) => {
     return `${ balance.amount } ${ balance.denom }`;
 }
 
-export const sendVoucher = (params: any) => {
-    client.post(`${ process.env.REACT_APP_DATA_OCEAN_BACKEND_URL }/sendVoucher`, params);
+export const senderVoucher = (params: any) => {
+    const bodyFormData = new FormData();
+    bodyFormData.append('payData', params.payData);
+    bodyFormData.append('paySign', params.paySign);
+
+    client.post(`${ process.env.REACT_APP_DATA_OCEAN_BACKEND_URL }/senderVoucher`, bodyFormData);
 }
