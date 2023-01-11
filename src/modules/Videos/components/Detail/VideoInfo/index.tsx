@@ -230,7 +230,7 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
             const url = eventPlayVideo ? eventPlayVideo[0].attributes[0].value : ''
             const payPrivateKey = eventPlayVideo ? eventPlayVideo[0].attributes[1].value : ''
             const payPublicKey = eventPlayVideo ? eventPlayVideo[0].attributes[2].value : ''
-            console.log({url, creator, id, payPrivateKey, payPublicKey})
+            // console.log({url, creator, id, payPrivateKey, payPublicKey})
            
             const signed: TxRaw = await client.paySign(
               creator,
@@ -242,7 +242,7 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
             const signedBytes= TxRaw.encode(signed).finish()
             // dataoceand tx decode [paySign] --hex
             const paySign= toHex(signedBytes)
-            console.log({paySign})
+            // console.log({paySign})
 
             updateVideoInfo(url, paySign, payPrivateKey, payPublicKey)
             // updateVideoInfo(videoUrl, paySign, payPrivateKey, payPublicKey)
