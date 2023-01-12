@@ -221,7 +221,7 @@ const UploadVideo = ({
           inputs.description,
           inputs.picUrl,
           inputs.videoUrl,
-          Long.fromNumber(parseInt(inputs.price)),
+          Long.fromNumber(parseInt(inputs.price) * 1000000),
           fee,
           t('video.uploadAVideo')
         )
