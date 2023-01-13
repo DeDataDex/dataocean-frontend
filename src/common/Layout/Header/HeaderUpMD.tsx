@@ -160,14 +160,14 @@ function Index(props: any) {
       }else{
         setIsAdmin(false)
       }
-      dispatch(
-        store.actions.getAccountBalance(newAccounts[0].address, (data: any) => setAccountBalance(data)),
-      );
+      updateAccountBalance(newAccounts[0].address)
+      setInterval(() => {
+        updateAccountBalance(newAccounts[0].address)
+      }, 2000)
     } else {
       // disconnect
       setTextStatus(1);
       setConnectStatus(1);
-
       // clean [accounts, pollvotes]store
     }
 
@@ -175,6 +175,13 @@ function Index(props: any) {
     setButtonDisable(false);
   }, [dispatch]);
 
+  const updateAccountBalance = useCallback((address: string) => {
+    dispatch(
+      store.actions.getAccountBalance(address, (data: any) =>{
+        setAccountBalance(data)
+      }),
+    );
+  }, [dispatch]);
   // Fixed the issue of refreshing page data presentation
   const initialConnectStatus = useCallback(() => {
     const isWalletInstalled = !!window.keplr;
