@@ -115,7 +115,7 @@ const fields = {
   description: '《花海》的歌词由周杰伦在杰威尔公司的两位同事合力完成。周杰伦开放一首歌让公司有创作兴趣的的同事比稿，结果古小力和黄淩嘉的歌词胜出，周杰伦将两人的歌词精华部分结合成一首情，于是就创作了这首《花海》',
   picUrl: '40ab10a70d7d68b49ed1b10c62bcaa075075818e.jpg@672w_378h_1c_web-search-common-cover.avif',
   videoUrl: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
-  price: '10',
+  price: '1',
 };
 
 const requiredFields = Object.keys(fields);
