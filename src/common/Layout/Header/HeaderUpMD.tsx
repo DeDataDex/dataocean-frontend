@@ -171,7 +171,7 @@ function Index(props: any) {
       updateAccountBalance(newAccounts[0].address)
       setInterval(() => {
         updateAccountBalance(newAccounts[0].address)
-      }, 2000)
+      }, 3000)
     } else {
       // disconnect
       setTextStatus(1);

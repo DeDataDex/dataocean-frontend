@@ -108,7 +108,7 @@ const AccountsBalance = ({
 
     const intervalId = setInterval(() => {
       updateAccount()
-    }, 2000 ) 
+    }, 3000 ) 
     return () => clearInterval(intervalId)
   }, [updateAccountBalance])
 
