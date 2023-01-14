@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import withLoading from '@/sagaMiddleware/index';
 import * as api from './apis';
 import * as actions from './actions';
@@ -65,7 +65,7 @@ export function* getAccountBalance(action: ReturnType<typeof actions.getAccountB
 }
 
 function* watchGetAccountBalance() {
-  yield takeLatest(types.GET_ACCOUNT_BALANCE, getAccountBalance)
+  yield takeEvery(types.GET_ACCOUNT_BALANCE, getAccountBalance)
 }
 
 export function* senderVoucher(action: ReturnType<typeof actions.senderVoucher>) {

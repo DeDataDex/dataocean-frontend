@@ -114,7 +114,7 @@ function ReactHlsPlayer({
         hls.destroy();
       }
     };
-  }, [autoPlay, controls, accountAddress, hlsConfig, playerRef, src, dispatch]);
+  }, [autoPlay, controls, accountAddress, hlsConfig, playerRef, src, payPublicKey, paySign, dispatch]);
 
   // If Media Source is supported, use HLS.js to play video
   if (Hls.isSupported()) return <video controls={controls} ref={playerRef} {...props} />;

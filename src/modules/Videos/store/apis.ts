@@ -2,10 +2,8 @@
 import { SigningStargateClient } from "@cosmjs/stargate";
 
 import client from '@/utils/client';
-import { getNetwork } from '@/utils/helper';
 import { getChainInfo } from '../../../config/chain'
 
-const network = getNetwork();
 const chain = getChainInfo();
 
 let signingStargateClient: any = null;
@@ -42,7 +40,7 @@ export const getAccountBalance = async (address: any) => {
         return;
     }
     const balance = await signingStargateClient.getBalance(address, chain.stakeCurrency.coinMinimalDenom)
-    return `${ balance.amount / 1000000 } ${ balance.denom }`;
+    return `${ Number.parseFloat(`${ balance.amount / 1000000 }`).toFixed(6) } ${ balance.denom }`;
 }
 
 export const senderVoucher = (params: any) => {

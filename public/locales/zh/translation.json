@@ -13,6 +13,9 @@
     "searchNotFoundDetail": "请返回重试或者回到<a href=\"/\">首页</a>."
   },
   "video": {
+    "cp": "内容提供商",
+    "miner": "矿工",
+    "user": "用户",
     "connectWarning": "请先连接Keplr钱包，才能播放视频",
     "authGrantSend": "授权播放完后结算费用",
     "getVideoPlayUrl": "获取视频播放地址",
@@ -50,6 +53,7 @@
     "upload": "上传",
     "loading": "处理中...",
     "uploadAVideo": "上传视频",
+    "accountsBalance": "帐户余额",
     "number": "数字",
     "txFee": "感谢费",
     "feeTips": "本次交易产生的费用",

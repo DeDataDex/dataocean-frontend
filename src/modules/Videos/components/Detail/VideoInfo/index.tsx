@@ -182,7 +182,7 @@ class VideoInfo extends PureComponent<Props, VideoCardState> {
   handlePlay = async() => {
     try {
       this.setState({ loading: true });
-      const { t, id, grantee, videoUrl, updateVideoInfo} = this.props
+      const { t, id, grantee, updateVideoInfo} = this.props
       const { keplr } = window
       if (!keplr) {
           alert("You need to install Keplr")

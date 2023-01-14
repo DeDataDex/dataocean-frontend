@@ -147,6 +147,14 @@ function Index(props: any) {
   const [textStatus, setTextStatus] = useState(0);
   const [buttonDisable, setButtonDisable] = useState(false);
 
+  const updateAccountBalance = useCallback((address: string) => {
+    dispatch(
+      store.actions.getAccountBalance(address, (data: any) =>{
+        setAccountBalance(data)
+      }),
+    );
+  }, [dispatch]);
+
   // connectStatusChange callback
   const handleNewAccounts = useCallback( (newAccounts: any[]) => {
     const isWalletConnected = newAccounts.length > 0;
@@ -173,15 +181,8 @@ function Index(props: any) {
 
     dispatch(store.actions.setWalletAccounts(newAccounts));
     setButtonDisable(false);
-  }, [dispatch]);
+  }, [dispatch, updateAccountBalance]);
 
-  const updateAccountBalance = useCallback((address: string) => {
-    dispatch(
-      store.actions.getAccountBalance(address, (data: any) =>{
-        setAccountBalance(data)
-      }),
-    );
-  }, [dispatch]);
   // Fixed the issue of refreshing page data presentation
   const initialConnectStatus = useCallback(() => {
     const isWalletInstalled = !!window.keplr;
@@ -311,7 +312,7 @@ function Index(props: any) {
         </div>
         <Box display="flex" alignItems="center" className={classes.rightBox}>
           {isAdmin ? (
-            <Button component={NavLink} to="/videos/upload" variant="outlined" className={classNames(classes.darkBgButton, classes.admin)}>
+            <Button component={NavLink} to="/videos/admin" variant="outlined" className={classNames(classes.darkBgButton, classes.admin)}>
               {t('header.admin')}
             </Button>
           ) : null}

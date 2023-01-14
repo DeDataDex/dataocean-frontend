@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import Helmet from 'react-helmet';
 import { useHistory } from "react-router-dom";
 import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
-import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import CenteredView from '@/common/View/CenteredView';
 import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -16,12 +11,13 @@ import client from '@/utils/client';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import { OfflineSigner } from "@cosmjs/proto-signing"
-import { chainId, getChainInfo } from '../../../../config/chain'
-import { DataOceanSigningStargateClient } from "../../../../dataocean_signingstargateclient"
+import { chainId, getChainInfo } from '../../../../../config/chain'
+import { DataOceanSigningStargateClient } from "../../../../../dataocean_signingstargateclient"
 import { GasPrice } from "@cosmjs/stargate"
 import { DeliverTxResponse } from "@cosmjs/stargate"
 import { coins } from "@cosmjs/amino"
 import Long from "long"
+import MOCK_VIDEO_LIST from '../../../../../mocks/videoList.json'
 
 const useStyles = (theme: Theme) =>
   createStyles({
@@ -110,12 +106,14 @@ interface UploadVideoProps {
   accounts: any[];
 }
 
+const videoInfo = MOCK_VIDEO_LIST.data.list[0]
+
 const fields = {
-  title: '花海',
-  description: '《花海》的歌词由周杰伦在杰威尔公司的两位同事合力完成。周杰伦开放一首歌让公司有创作兴趣的的同事比稿，结果古小力和黄淩嘉的歌词胜出，周杰伦将两人的歌词精华部分结合成一首情，于是就创作了这首《花海》',
-  picUrl: '40ab10a70d7d68b49ed1b10c62bcaa075075818e.jpg@672w_378h_1c_web-search-common-cover.avif',
-  videoUrl: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
-  price: '1',
+  title: videoInfo.name,
+  description: videoInfo.desc,
+  picUrl: videoInfo.picUrl,
+  videoUrl: videoInfo.videoUrl,
+  price: videoInfo.price,
 };
 
 const requiredFields = Object.keys(fields);
@@ -133,7 +131,6 @@ const UploadVideo = ({
   const history = useHistory();
   const [form, setForm] = useState<Record<string, any>>(fields);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
-  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const chain = getChainInfo();
@@ -254,18 +251,6 @@ const UploadVideo = ({
   } = form;
 
   useEffect(() => {
-    // check isAdmin
-    const isWalletInstalled = !!window.keplr;
-    if (isWalletInstalled) {
-      const accountAddress = accounts && accounts.length ? accounts[0].address : ''
-      if (accountAddress && process.env.REACT_APP_DATA_OCEAN_ADMIN_ADDRESS?.split(',').filter((address) => address.toLowerCase() === accountAddress).length) {
-        setIsAdmin(true)
-      }else {
-        setIsAdmin(false)
-        history.push('/error');
-      }
-    };
-  
     const init = async () => {
       if (open) {
         // 此时为添加，会带上默认 creator
@@ -296,127 +281,112 @@ const UploadVideo = ({
 
   moment.locale(t('video.locale'));
 
-  return isAdmin ? (
-    <div>
-      <Helmet>
-        <title>{t('video.uploadAVideo')}</title>
-      </Helmet>
-      <CenteredView>
-          <Card>
-            <CardHeader
-              title={
-                <Grid container alignItems="center" spacing={1}>
-                  <Grid item>
-                    <Typography>{id ? t('video.edit') : t('video.uploadAVideo')}</Typography>
-                  </Grid>
-                  </Grid>
-              } />
-          <Box className={classes.formBox}>
-            <TextField
-              margin="dense"
-              required
-              id="title"
-              name="title"
-              helperText={errors.title ? helperTextMaps.title : undefined}
-              error={errors.title}
-              value={title}
-              label="中文标题"
-              fullWidth
-              onChange={handleFormChange}
-            />
-            <TextField
-              margin="dense"
-              id="description"
-              required
-              name="description"
-              helperText={errors.description ? helperTextMaps.description : undefined}
-              error={errors.description}
-              value={description}
-              label="中文描述"
-              multiline
-              rowsMax="4"
-              fullWidth
-              onChange={handleFormChange}
-            />
-            <TextField
-              margin="dense"
-              id="picUrl"
-              required
-              name="picUrl"
-              helperText={errors.picUrl ? helperTextMaps.picUrl : undefined}
-              error={errors.picUrl}
-              value={picUrl}
-              label={t('video.picUrl')}
-              fullWidth
-              onChange={handleFormChange}
-            />
-            <TextField
-              margin="dense"
-              required
-              id="videoUrl"
-              name="videoUrl"
-              helperText={errors.videoUrl ? helperTextMaps.videoUrl : undefined}
-              error={errors.videoUrl}
-              value={videoUrl}
-              label={t('video.videoUrl')}
-              fullWidth
-              onChange={handleFormChange}
-            />
-            <TextField
-              margin="dense"
-              required
-              id="price"
-              name="price"
-              helperText={errors.price ? helperTextMaps.price : undefined}
-              error={errors.price}
-              value={price}
-              label={`${t('video.price')} TOKEN/MB`}
-              fullWidth
-              onChange={handleFormChange}
-            />
-            {/* <TextField
-              margin="dense"
-              required
-              id="duration"
-              name="duration"
-              error={errors.duration}
-              helperText={
-                errors.duration ? helperTextMaps.duration : undefined
-              }
-              value={duration}
-              label={t('video.duration')}
-              fullWidth
-              onChange={handleFormChange}
-            />
-            <TextField
-              margin="dense"
-              id="size"
-              required
-              name="size"
-              error={errors.size}
-              helperText={
-                errors.size ? helperTextMaps.size : undefined
-              }
-              value={size}
-              label={t('video.size')}
-              fullWidth
-              onChange={handleFormChange}
-            /> */}
-          </Box>
-          <Box className={classes.formBox}>
-            <DialogActions>
-              <Button variant="contained" color="secondary" onClick={handleClose} disabled={loading}>
-                {t('video.cancel')}
-              </Button>
-              <Button variant="contained" color="primary" onClick={handleSubmit} disabled={loading}>
-                {loading ? t('video.loading') : t('video.upload')}
-              </Button>
-            </DialogActions>
-          </Box>
-          </Card>
-        </CenteredView>
-    </div>
-  ) : null;
+  return (
+    <Card>
+      <Box className={classes.formBox}>
+        <TextField
+          margin="dense"
+          required
+          id="title"
+          name="title"
+          helperText={errors.title ? helperTextMaps.title : undefined}
+          error={errors.title}
+          value={title}
+          label="中文标题"
+          fullWidth
+          onChange={handleFormChange}
+        />
+        <TextField
+          margin="dense"
+          id="description"
+          required
+          name="description"
+          helperText={errors.description ? helperTextMaps.description : undefined}
+          error={errors.description}
+          value={description}
+          label="中文描述"
+          multiline
+          rowsMax="4"
+          fullWidth
+          onChange={handleFormChange}
+        />
+        <TextField
+          margin="dense"
+          id="picUrl"
+          required
+          name="picUrl"
+          helperText={errors.picUrl ? helperTextMaps.picUrl : undefined}
+          error={errors.picUrl}
+          value={picUrl}
+          label={t('video.picUrl')}
+          fullWidth
+          onChange={handleFormChange}
+        />
+        <TextField
+          margin="dense"
+          required
+          id="videoUrl"
+          name="videoUrl"
+          helperText={errors.videoUrl ? helperTextMaps.videoUrl : undefined}
+          error={errors.videoUrl}
+          value={videoUrl}
+          label={t('video.videoUrl')}
+          fullWidth
+          onChange={handleFormChange}
+        />
+        <TextField
+          margin="dense"
+          required
+          id="price"
+          name="price"
+          helperText={errors.price ? helperTextMaps.price : undefined}
+          error={errors.price}
+          value={price}
+          label={`${t('video.price')} TOKEN/MB`}
+          fullWidth
+          onChange={handleFormChange}
+        />
+        {/* <TextField
+          margin="dense"
+          required
+          id="duration"
+          name="duration"
+          error={errors.duration}
+          helperText={
+            errors.duration ? helperTextMaps.duration : undefined
+          }
+          value={duration}
+          label={t('video.duration')}
+          fullWidth
+          onChange={handleFormChange}
+        />
+        <TextField
+          margin="dense"
+          id="size"
+          required
+          name="size"
+          error={errors.size}
+          helperText={
+            errors.size ? helperTextMaps.size : undefined
+          }
+          value={size}
+          label={t('video.size')}
+          fullWidth
+          onChange={handleFormChange}
+        /> */}
+      </Box>
+      <Box className={classes.formBox}>
+        <DialogActions>
+          <Button variant="contained" color="secondary" onClick={handleClose} disabled={loading}>
+            {t('video.cancel')}
+          </Button>
+          <Button variant="contained" color="primary" onClick={handleSubmit} disabled={loading}>
+            {loading ? t('video.loading') : t('video.upload')}
+          </Button>
+        </DialogActions>
+      </Box>
+    </Card>
+  )
 };
 
 UploadVideo.defaultProps = {

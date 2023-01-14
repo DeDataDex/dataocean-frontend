@@ -13,6 +13,9 @@
     "searchNotFoundDetail": "Try going back to where you were or heading to the <a href=\"/\">home</a> page."
   },
   "video": {
+    "cp": "cp",
+    "miner": "miner",
+    "user": "user",
     "connectWarning": "Please connect wallet to play video",
     "authGrantSend": "Auth Grant Send",
     "getVideoPlayUrl": "Get Video Play Url",
@@ -51,6 +54,7 @@
     "upload": "Upload",
     "loading": "Loading",
     "uploadAVideo": "Upload A Video",
+    "accountsBalance": "Accounts Balance",
     "number": "Number",
     "txFee": "Tx Fee",
     "feeTips": "Fee paid to execute this transaction",
