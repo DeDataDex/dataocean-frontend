@@ -6,7 +6,6 @@ import CenteredView from '@/common/View/CenteredView';
 import Card from '@material-ui/core/Card';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import UploadVideo  from './UploadVideo/adapter';
 import AccountsBalance  from './AccountsBalance/adapter';
@@ -112,8 +111,8 @@ function TabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box>
-        <Typography>{children}</Typography>
-      </Box>
+          {children}
+        </Box>
       )}
     </div>
   );
