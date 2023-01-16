@@ -82,9 +82,9 @@ function ReactHlsPlayer({
       });
 
       newHls.on(Hls.Events.FRAG_BUFFERED, function (event, data) {
-        const receivedSizeMB = data.stats.total / 1024 / 1024
+        const receivedSize = data.stats.total
         const payDataOrigin =  {
-          receivedSizeMB,
+          receivedSize,
           timestamp: Math.ceil(new Date().getTime() / 1000),
         }
         
